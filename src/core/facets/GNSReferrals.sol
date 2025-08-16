@@ -21,16 +21,11 @@ contract GNSReferrals is GNSAddressStore, IReferralsUtils {
     }
 
     /// @inheritdoc IReferralsUtils
-    function initializeReferrals(
-        uint256 _allyFeeP,
-        uint256 _startReferrerFeeP,
-        uint256 _targetVolumeUsd
-    ) external reinitializer(3) {
-        ReferralsUtils.initializeReferrals(
-            _allyFeeP,
-            _startReferrerFeeP,
-            _targetVolumeUsd
-        );
+    function initializeReferrals(uint256 _allyFeeP, uint256 _startReferrerFeeP, uint256 _targetVolumeUsd)
+        external
+        reinitializer(3)
+    {
+        ReferralsUtils.initializeReferrals(_allyFeeP, _startReferrerFeeP, _targetVolumeUsd);
     }
 
     // Management Setters
@@ -41,71 +36,55 @@ contract GNSReferrals is GNSAddressStore, IReferralsUtils {
     }
 
     /// @inheritdoc IReferralsUtils
-    function updateStartReferrerFeeP(
-        uint256 _value
-    ) external onlyRole(Role.GOV) {
+    function updateStartReferrerFeeP(uint256 _value) external onlyRole(Role.GOV) {
         ReferralsUtils.updateStartReferrerFeeP(_value);
     }
 
     /// @inheritdoc IReferralsUtils
-    function updateReferralsTargetVolumeUsd(
-        uint256 _value
-    ) external onlyRole(Role.GOV) {
+    function updateReferralsTargetVolumeUsd(uint256 _value) external onlyRole(Role.GOV) {
         ReferralsUtils.updateReferralsTargetVolumeUsd(_value);
     }
 
     /// @inheritdoc IReferralsUtils
-    function whitelistAllies(
-        address[] calldata _allies
-    ) external onlyRole(Role.GOV) {
+    function whitelistAllies(address[] calldata _allies) external onlyRole(Role.GOV) {
         ReferralsUtils.whitelistAllies(_allies);
     }
 
     /// @inheritdoc IReferralsUtils
-    function unwhitelistAllies(
-        address[] calldata _allies
-    ) external onlyRole(Role.GOV) {
+    function unwhitelistAllies(address[] calldata _allies) external onlyRole(Role.GOV) {
         ReferralsUtils.unwhitelistAllies(_allies);
     }
 
     /// @inheritdoc IReferralsUtils
-    function whitelistReferrers(
-        address[] calldata _referrers,
-        address[] calldata _allies
-    ) external onlyRole(Role.GOV) {
+    function whitelistReferrers(address[] calldata _referrers, address[] calldata _allies)
+        external
+        onlyRole(Role.GOV)
+    {
         ReferralsUtils.whitelistReferrers(_referrers, _allies);
     }
 
     /// @inheritdoc IReferralsUtils
-    function unwhitelistReferrers(
-        address[] calldata _referrers
-    ) external onlyRole(Role.GOV) {
+    function unwhitelistReferrers(address[] calldata _referrers) external onlyRole(Role.GOV) {
         ReferralsUtils.unwhitelistReferrers(_referrers);
     }
 
     /// @inheritdoc IReferralsUtils
-    function overrideReferralFeeP(
-        address[] calldata _referrers,
-        uint24[] calldata _referralFeeP
-    ) external onlyRole(Role.GOV) {
+    function overrideReferralFeeP(address[] calldata _referrers, uint24[] calldata _referralFeeP)
+        external
+        onlyRole(Role.GOV)
+    {
         ReferralsUtils.overrideReferralFeeP(_referrers, _referralFeeP);
     }
 
     /// @inheritdoc IReferralsUtils
-    function overrideAllyFeeP(
-        address[] calldata _allies,
-        uint24[] calldata _allyFeeP
-    ) external onlyRole(Role.GOV) {
+    function overrideAllyFeeP(address[] calldata _allies, uint24[] calldata _allyFeeP) external onlyRole(Role.GOV) {
         ReferralsUtils.overrideAllyFeeP(_allies, _allyFeeP);
     }
 
     // Interactions
 
     /// @inheritdoc IReferralsUtils
-    function registerPotentialReferrer(
-        address _trader,
-        address _referrer
-    ) external virtual onlySelf {
+    function registerPotentialReferrer(address _trader, address _referrer) external virtual onlySelf {
         ReferralsUtils.registerPotentialReferrer(_trader, _referrer);
     }
 
@@ -116,13 +95,7 @@ contract GNSReferrals is GNSAddressStore, IReferralsUtils {
         uint256 _referrerFeeUsd,
         uint256 _gnsPriceUsd
     ) external virtual onlySelf {
-        return
-            ReferralsUtils.distributeReferralReward(
-                _trader,
-                _volumeUsd,
-                _referrerFeeUsd,
-                _gnsPriceUsd
-            );
+        return ReferralsUtils.distributeReferralReward(_trader, _volumeUsd, _referrerFeeUsd, _gnsPriceUsd);
     }
 
     /// @inheritdoc IReferralsUtils
@@ -138,37 +111,27 @@ contract GNSReferrals is GNSAddressStore, IReferralsUtils {
     // Getters
 
     /// @inheritdoc IReferralsUtils
-    function getReferrerFeeProgressP(
-        address _referrer
-    ) external view returns (uint256) {
+    function getReferrerFeeProgressP(address _referrer) external view returns (uint256) {
         return ReferralsUtils.getReferrerFeeProgressP(_referrer);
     }
 
     /// @inheritdoc IReferralsUtils
-    function getTraderLastReferrer(
-        address _trader
-    ) external view returns (address) {
+    function getTraderLastReferrer(address _trader) external view returns (address) {
         return ReferralsUtils.getTraderLastReferrer(_trader);
     }
 
     /// @inheritdoc IReferralsUtils
-    function getTraderActiveReferrer(
-        address _trader
-    ) external view returns (address) {
+    function getTraderActiveReferrer(address _trader) external view returns (address) {
         return ReferralsUtils.getTraderActiveReferrer(_trader);
     }
 
     /// @inheritdoc IReferralsUtils
-    function getReferrersReferred(
-        address _ally
-    ) external view returns (address[] memory) {
+    function getReferrersReferred(address _ally) external view returns (address[] memory) {
         return ReferralsUtils.getReferrersReferred(_ally);
     }
 
     /// @inheritdoc IReferralsUtils
-    function getTradersReferred(
-        address _referrer
-    ) external view returns (address[] memory) {
+    function getTradersReferred(address _referrer) external view returns (address[] memory) {
         return ReferralsUtils.getTradersReferred(_referrer);
     }
 
@@ -188,23 +151,17 @@ contract GNSReferrals is GNSAddressStore, IReferralsUtils {
     }
 
     /// @inheritdoc IReferralsUtils
-    function getAllyDetails(
-        address _ally
-    ) external view returns (AllyDetails memory) {
+    function getAllyDetails(address _ally) external view returns (AllyDetails memory) {
         return ReferralsUtils.getAllyDetails(_ally);
     }
 
     /// @inheritdoc IReferralsUtils
-    function getReferrerDetails(
-        address _referrer
-    ) external view returns (ReferrerDetails memory) {
+    function getReferrerDetails(address _referrer) external view returns (ReferrerDetails memory) {
         return ReferralsUtils.getReferrerDetails(_referrer);
     }
 
     /// @inheritdoc IReferralsUtils
-    function getReferralSettingsOverrides(
-        address _address
-    ) external view returns (ReferralSettingsOverrides memory) {
+    function getReferralSettingsOverrides(address _address) external view returns (ReferralSettingsOverrides memory) {
         return ReferralsUtils.getReferralSettingsOverrides(_address);
     }
 }

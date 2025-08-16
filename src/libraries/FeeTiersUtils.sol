@@ -19,8 +19,7 @@ library FeeTiersUtils {
     uint32 private constant FEE_MULTIPLIER_SCALE = 1e3;
     uint224 private constant POINTS_THRESHOLD_SCALE = 1e18;
     uint256 private constant GROUP_VOLUME_MULTIPLIER_SCALE = 1e3;
-    uint224 private constant MAX_CREDITED_POINTS_PER_DAY =
-        type(uint224).max / TRAILING_PERIOD_DAYS / 2;
+    uint224 private constant MAX_CREDITED_POINTS_PER_DAY = type(uint224).max / TRAILING_PERIOD_DAYS / 2;
 
     /**
      * @dev Check IFeeTiersUtils interface for documentation
@@ -38,37 +37,26 @@ library FeeTiersUtils {
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function setGroupVolumeMultipliers(
-        uint256[] calldata _groupIndices,
-        uint256[] calldata _groupVolumeMultipliers
-    ) internal {
+    function setGroupVolumeMultipliers(uint256[] calldata _groupIndices, uint256[] calldata _groupVolumeMultipliers)
+        internal
+    {
         if (_groupIndices.length != _groupVolumeMultipliers.length) {
             revert IGeneralErrors.WrongLength();
         }
 
-        mapping(uint256 => uint256)
-            storage groupVolumeMultipliers = _getStorage()
-                .groupVolumeMultipliers;
+        mapping(uint256 => uint256) storage groupVolumeMultipliers = _getStorage().groupVolumeMultipliers;
 
         for (uint256 i; i < _groupIndices.length; ++i) {
-            groupVolumeMultipliers[_groupIndices[i]] = _groupVolumeMultipliers[
-                i
-            ];
+            groupVolumeMultipliers[_groupIndices[i]] = _groupVolumeMultipliers[i];
         }
 
-        emit IFeeTiersUtils.GroupVolumeMultipliersUpdated(
-            _groupIndices,
-            _groupVolumeMultipliers
-        );
+        emit IFeeTiersUtils.GroupVolumeMultipliersUpdated(_groupIndices, _groupVolumeMultipliers);
     }
 
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function setFeeTiers(
-        uint256[] calldata _feeTiersIndices,
-        IFeeTiers.FeeTier[] calldata _feeTiers
-    ) internal {
+    function setFeeTiers(uint256[] calldata _feeTiersIndices, IFeeTiers.FeeTier[] calldata _feeTiers) internal {
         if (_feeTiersIndices.length != _feeTiers.length) {
             revert IGeneralErrors.WrongLength();
         }
@@ -82,11 +70,7 @@ library FeeTiersUtils {
 
         // Then check updates are valid
         for (uint256 i; i < _feeTiersIndices.length; ++i) {
-            _checkFeeTierUpdateValid(
-                _feeTiersIndices[i],
-                _feeTiers[i],
-                feeTiersStorage
-            );
+            _checkFeeTierUpdateValid(_feeTiersIndices[i], _feeTiers[i], feeTiersStorage);
         }
 
         emit IFeeTiersUtils.FeeTiersUpdated(_feeTiersIndices, _feeTiers);
@@ -95,10 +79,9 @@ library FeeTiersUtils {
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function setTradersFeeTiersEnrollment(
-        address[] calldata _traders,
-        IFeeTiers.TraderEnrollment[] calldata _values
-    ) internal {
+    function setTradersFeeTiersEnrollment(address[] calldata _traders, IFeeTiers.TraderEnrollment[] calldata _values)
+        internal
+    {
         if (_traders.length != _values.length) {
             revert IGeneralErrors.WrongLength();
         }
@@ -106,10 +89,7 @@ library FeeTiersUtils {
         IFeeTiers.FeeTiersStorage storage s = _getStorage();
 
         for (uint256 i; i < _traders.length; ++i) {
-            (address trader, IFeeTiers.TraderEnrollment memory enrollment) = (
-                _traders[i],
-                _values[i]
-            );
+            (address trader, IFeeTiers.TraderEnrollment memory enrollment) = (_traders[i], _values[i]);
 
             // Ensure __placeholder remains 0 for future compatibility
             enrollment.__placeholder = 0;
@@ -129,10 +109,7 @@ library FeeTiersUtils {
         IFeeTiers.CreditType[] calldata _creditTypes,
         uint224[] calldata _points
     ) internal {
-        if (
-            _traders.length != _creditTypes.length ||
-            _traders.length != _points.length
-        ) {
+        if (_traders.length != _creditTypes.length || _traders.length != _points.length) {
             revert IGeneralErrors.WrongLength();
         }
 
@@ -140,19 +117,14 @@ library FeeTiersUtils {
         uint32 currentDay = _getCurrentDay();
 
         for (uint256 i; i < _traders.length; ++i) {
-            (
-                address trader,
-                IFeeTiers.CreditType creditType,
-                uint224 points
-            ) = (_traders[i], _creditTypes[i], _points[i]);
+            (address trader, IFeeTiers.CreditType creditType, uint224 points) =
+                (_traders[i], _creditTypes[i], _points[i]);
 
             // Calculate new total daily points for trader, including unclaimed ones.
             // This ensures that the total daily points for a trader are capped at MAX_CREDITED_POINTS_PER_DAY to prevent trailingPoints
             // from overflowing when points added through trading or other credit events.
-            uint224 totalDailyPoints = s
-            .traderDailyInfos[trader][currentDay].points +
-                s.unclaimedPoints[trader] +
-                points;
+            uint224 totalDailyPoints =
+                s.traderDailyInfos[trader][currentDay].points + s.unclaimedPoints[trader] + points;
 
             // Check total available points are within the safe range
             if (totalDailyPoints > MAX_CREDITED_POINTS_PER_DAY) {
@@ -167,48 +139,30 @@ library FeeTiersUtils {
                 updateTraderPoints(trader, 0, 0);
             }
 
-            emit IFeeTiersUtils.TraderPointsCredited(
-                trader,
-                currentDay,
-                creditType,
-                points
-            );
+            emit IFeeTiersUtils.TraderPointsCredited(trader, currentDay, creditType, points);
         }
     }
 
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function updateTraderPoints(
-        address _trader,
-        uint256 _volumeUsd,
-        uint256 _groupIndex
-    ) internal {
+    function updateTraderPoints(address _trader, uint256 _volumeUsd, uint256 _groupIndex) internal {
         IFeeTiers.FeeTiersStorage storage s = _getStorage();
 
         // Claim any pending points before updating
         _claimUnclaimedPoints(_trader);
 
         // Scale amount by group multiplier
-        uint224 points = uint224(
-            (_volumeUsd * s.groupVolumeMultipliers[_groupIndex]) /
-                GROUP_VOLUME_MULTIPLIER_SCALE
-        );
+        uint224 points = uint224((_volumeUsd * s.groupVolumeMultipliers[_groupIndex]) / GROUP_VOLUME_MULTIPLIER_SCALE);
 
-        mapping(uint32 => IFeeTiers.TraderDailyInfo) storage traderDailyInfo = s
-            .traderDailyInfos[_trader];
+        mapping(uint32 => IFeeTiers.TraderDailyInfo) storage traderDailyInfo = s.traderDailyInfos[_trader];
         uint32 currentDay = _getCurrentDay();
-        IFeeTiers.TraderDailyInfo
-            storage traderCurrentDayInfo = traderDailyInfo[currentDay];
+        IFeeTiers.TraderDailyInfo storage traderCurrentDayInfo = traderDailyInfo[currentDay];
 
         // Increase points for current day
         if (points > 0) {
             traderCurrentDayInfo.points += points;
-            emit IFeeTiersUtils.TraderDailyPointsIncreased(
-                _trader,
-                currentDay,
-                points
-            );
+            emit IFeeTiersUtils.TraderDailyPointsIncreased(_trader, currentDay, points);
         }
 
         IFeeTiers.TraderInfo storage traderInfo = s.traderInfos[_trader];
@@ -234,31 +188,21 @@ library FeeTiersUtils {
 
             if (traderInfo.lastDayUpdated >= earliestActiveDay) {
                 // Load current trailing points and add last day updated points since they are now finalized
-                curTrailingPoints =
-                    traderInfo.trailingPoints +
-                    traderDailyInfo[traderInfo.lastDayUpdated].points;
+                curTrailingPoints = traderInfo.trailingPoints + traderDailyInfo[traderInfo.lastDayUpdated].points;
 
                 // Expire outdated trailing points
-                uint32 earliestOutdatedDay = traderInfo.lastDayUpdated -
-                    TRAILING_PERIOD_DAYS;
+                uint32 earliestOutdatedDay = traderInfo.lastDayUpdated - TRAILING_PERIOD_DAYS;
                 uint32 lastOutdatedDay = earliestActiveDay - 1;
 
                 uint224 expiredTrailingPoints;
-                for (
-                    uint32 i = earliestOutdatedDay;
-                    i <= lastOutdatedDay;
-                    ++i
-                ) {
+                for (uint32 i = earliestOutdatedDay; i <= lastOutdatedDay; ++i) {
                     expiredTrailingPoints += traderDailyInfo[i].points;
                 }
 
                 curTrailingPoints -= expiredTrailingPoints;
 
                 emit IFeeTiersUtils.TraderTrailingPointsExpired(
-                    _trader,
-                    earliestOutdatedDay,
-                    lastOutdatedDay,
-                    expiredTrailingPoints
+                    _trader, earliestOutdatedDay, lastOutdatedDay, expiredTrailingPoints
                 );
             }
 
@@ -274,10 +218,7 @@ library FeeTiersUtils {
             for (uint256 i = getFeeTiersCount(); i > 0; --i) {
                 IFeeTiers.FeeTier memory feeTier = s.feeTiers[i - 1];
 
-                if (
-                    curTrailingPoints >=
-                    uint224(feeTier.pointsThreshold) * POINTS_THRESHOLD_SCALE
-                ) {
+                if (curTrailingPoints >= uint224(feeTier.pointsThreshold) * POINTS_THRESHOLD_SCALE) {
                     newFeeMultiplier = feeTier.feeMultiplier;
                     break;
                 }
@@ -285,35 +226,23 @@ library FeeTiersUtils {
 
             // Update trader cached fee multiplier
             traderCurrentDayInfo.feeMultiplierCache = newFeeMultiplier;
-            emit IFeeTiersUtils.TraderFeeMultiplierCached(
-                _trader,
-                currentDay,
-                newFeeMultiplier
-            );
+            emit IFeeTiersUtils.TraderFeeMultiplierCached(_trader, currentDay, newFeeMultiplier);
         }
     }
 
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function calculateFeeAmount(
-        address _trader,
-        uint256 _normalFeeAmountCollateral
-    ) internal view returns (uint256) {
+    function calculateFeeAmount(address _trader, uint256 _normalFeeAmountCollateral) internal view returns (uint256) {
         IFeeTiers.FeeTiersStorage storage s = _getStorage();
-        IFeeTiers.TraderEnrollment storage enrollment = s.traderEnrollments[
-            _trader
-        ];
-        uint32 feeMultiplier = s
-        .traderDailyInfos[_trader][_getCurrentDay()].feeMultiplierCache;
+        IFeeTiers.TraderEnrollment storage enrollment = s.traderEnrollments[_trader];
+        uint32 feeMultiplier = s.traderDailyInfos[_trader][_getCurrentDay()].feeMultiplierCache;
 
         return
-            // If  fee multiplier is 0 or trader is excluded, return normal fee amount, otherwise apply multiplier
-            feeMultiplier == 0 ||
-                enrollment.status == IFeeTiers.TraderEnrollmentStatus.EXCLUDED
-                ? _normalFeeAmountCollateral
-                : (uint256(feeMultiplier) * _normalFeeAmountCollateral) /
-                    uint256(FEE_MULTIPLIER_SCALE);
+        // If  fee multiplier is 0 or trader is excluded, return normal fee amount, otherwise apply multiplier
+        feeMultiplier == 0 || enrollment.status == IFeeTiers.TraderEnrollmentStatus.EXCLUDED
+            ? _normalFeeAmountCollateral
+            : (uint256(feeMultiplier) * _normalFeeAmountCollateral) / uint256(FEE_MULTIPLIER_SCALE);
     }
 
     /**
@@ -334,55 +263,46 @@ library FeeTiersUtils {
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function getFeeTier(
-        uint256 _feeTierIndex
-    ) internal view returns (IFeeTiers.FeeTier memory) {
+    function getFeeTier(uint256 _feeTierIndex) internal view returns (IFeeTiers.FeeTier memory) {
         return _getStorage().feeTiers[_feeTierIndex];
     }
 
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function getGroupVolumeMultiplier(
-        uint256 _groupIndex
-    ) internal view returns (uint256) {
+    function getGroupVolumeMultiplier(uint256 _groupIndex) internal view returns (uint256) {
         return _getStorage().groupVolumeMultipliers[_groupIndex];
     }
 
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function getFeeTiersTraderInfo(
-        address _trader
-    ) internal view returns (IFeeTiers.TraderInfo memory) {
+    function getFeeTiersTraderInfo(address _trader) internal view returns (IFeeTiers.TraderInfo memory) {
         return _getStorage().traderInfos[_trader];
     }
 
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function getTraderFeeTiersEnrollment(
-        address _trader
-    ) internal view returns (IFeeTiers.TraderEnrollment memory) {
+    function getTraderFeeTiersEnrollment(address _trader) internal view returns (IFeeTiers.TraderEnrollment memory) {
         return _getStorage().traderEnrollments[_trader];
     }
 
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function getTraderUnclaimedPoints(
-        address _trader
-    ) internal view returns (uint224) {
+    function getTraderUnclaimedPoints(address _trader) internal view returns (uint224) {
         return _getStorage().unclaimedPoints[_trader];
     }
 
     /**
      * @dev Check IFeeTiersUtils interface for documentation
      */
-    function getFeeTiersTraderDailyInfo(
-        address _trader,
-        uint32 _day
-    ) internal view returns (IFeeTiers.TraderDailyInfo memory) {
+    function getFeeTiersTraderDailyInfo(address _trader, uint32 _day)
+        internal
+        view
+        returns (IFeeTiers.TraderDailyInfo memory)
+    {
         return _getStorage().traderDailyInfos[_trader][_day];
     }
 
@@ -396,11 +316,7 @@ library FeeTiersUtils {
     /**
      * @dev Returns storage pointer for storage struct in diamond contract, at defined slot
      */
-    function _getStorage()
-        internal
-        pure
-        returns (IFeeTiers.FeeTiersStorage storage s)
-    {
+    function _getStorage() internal pure returns (IFeeTiers.FeeTiersStorage storage s) {
         uint256 storageSlot = _getSlot();
         assembly {
             s.slot := storageSlot
@@ -418,16 +334,16 @@ library FeeTiersUtils {
         IFeeTiers.FeeTier calldata _feeTier,
         IFeeTiers.FeeTier[8] storage _feeTiers
     ) internal view {
-        bool isDisabled = _feeTier.feeMultiplier == 0 &&
-            _feeTier.pointsThreshold == 0;
+        bool isDisabled = _feeTier.feeMultiplier == 0 && _feeTier.pointsThreshold == 0;
 
         // Either both feeMultiplier and pointsThreshold are 0 or none
         // And make sure feeMultiplier < 1 && feeMultiplier >= 0.5 to cap discount to 50%
         if (
-            !isDisabled &&
-            (_feeTier.feeMultiplier >= FEE_MULTIPLIER_SCALE ||
-                _feeTier.feeMultiplier < FEE_MULTIPLIER_SCALE / 2 ||
-                _feeTier.pointsThreshold == 0)
+            !isDisabled
+                && (
+                    _feeTier.feeMultiplier >= FEE_MULTIPLIER_SCALE || _feeTier.feeMultiplier < FEE_MULTIPLIER_SCALE / 2
+                        || _feeTier.pointsThreshold == 0
+                )
         ) {
             revert IFeeTiersUtils.WrongFeeTier();
         }
@@ -444,9 +360,11 @@ library FeeTiersUtils {
             if (hasNextValue) {
                 IFeeTiers.FeeTier memory feeTier = _feeTiers[_index + 1];
                 if (
-                    feeTier.feeMultiplier != 0 &&
-                    (feeTier.feeMultiplier >= _feeTier.feeMultiplier ||
-                        feeTier.pointsThreshold <= _feeTier.pointsThreshold)
+                    feeTier.feeMultiplier != 0
+                        && (
+                            feeTier.feeMultiplier >= _feeTier.feeMultiplier
+                                || feeTier.pointsThreshold <= _feeTier.pointsThreshold
+                        )
                 ) {
                     revert IGeneralErrors.WrongOrder();
                 }
@@ -456,8 +374,8 @@ library FeeTiersUtils {
             if (_index > 0) {
                 IFeeTiers.FeeTier memory feeTier = _feeTiers[_index - 1];
                 if (
-                    feeTier.feeMultiplier <= _feeTier.feeMultiplier ||
-                    feeTier.pointsThreshold >= _feeTier.pointsThreshold
+                    feeTier.feeMultiplier <= _feeTier.feeMultiplier
+                        || feeTier.pointsThreshold >= _feeTier.pointsThreshold
                 ) {
                     revert IGeneralErrors.WrongOrder();
                 }
@@ -509,10 +427,6 @@ library FeeTiersUtils {
             s.traderDailyInfos[_trader][currentDay].points += unclaimedPoints;
         }
 
-        emit IFeeTiersUtils.TraderUnclaimedPointsClaimed(
-            _trader,
-            currentDay,
-            unclaimedPoints
-        );
+        emit IFeeTiersUtils.TraderUnclaimedPointsClaimed(_trader, currentDay, unclaimedPoints);
     }
 }

@@ -24,16 +24,10 @@ library ReferralsUtils {
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function initializeReferrals(
-        uint256 _allyFeeP,
-        uint256 _startReferrerFeeP,
-        uint256 _targetVolumeUsd
-    ) internal {
-        if (
-            _allyFeeP > MAX_ALLY_FEE_P ||
-            _startReferrerFeeP > MAX_START_REFERRER_FEE_P ||
-            _targetVolumeUsd == 0
-        ) revert IGeneralErrors.WrongParams();
+    function initializeReferrals(uint256 _allyFeeP, uint256 _startReferrerFeeP, uint256 _targetVolumeUsd) internal {
+        if (_allyFeeP > MAX_ALLY_FEE_P || _startReferrerFeeP > MAX_START_REFERRER_FEE_P || _targetVolumeUsd == 0) {
+            revert IGeneralErrors.WrongParams();
+        }
 
         IReferralsUtils.ReferralsStorage storage s = _getStorage();
 
@@ -96,12 +90,10 @@ library ReferralsUtils {
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function whitelistReferrers(
-        address[] calldata _referrers,
-        address[] calldata _allies
-    ) internal {
-        if (_referrers.length != _allies.length)
+    function whitelistReferrers(address[] calldata _referrers, address[] calldata _allies) internal {
+        if (_referrers.length != _allies.length) {
             revert IGeneralErrors.WrongLength();
+        }
 
         for (uint256 i = 0; i < _referrers.length; ++i) {
             _whitelistReferrer(_referrers[i], _allies[i]);
@@ -120,10 +112,7 @@ library ReferralsUtils {
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function overrideReferralFeeP(
-        address[] calldata _referrers,
-        uint24[] calldata _referralFeeP
-    ) internal {
+    function overrideReferralFeeP(address[] calldata _referrers, uint24[] calldata _referralFeeP) internal {
         IReferrals.ReferralsStorage storage s = _getStorage();
 
         for (uint256 i = 0; i < _referrers.length; ++i) {
@@ -131,12 +120,11 @@ library ReferralsUtils {
             if (!s.referrerDetails[referrer].active) continue;
 
             uint24 referralFeeP = _referralFeeP[i];
-            if (referralFeeP > ConstantsUtils.MAX_REFERRAL_FEE_P)
+            if (referralFeeP > ConstantsUtils.MAX_REFERRAL_FEE_P) {
                 revert IGeneralErrors.AboveMax();
+            }
 
-            s
-                .referralSettingsOverrides[referrer]
-                .referralFeeOverrideP = referralFeeP;
+            s.referralSettingsOverrides[referrer].referralFeeOverrideP = referralFeeP;
 
             emit IReferralsUtils.OverrodeReferralFeeP(referrer, referralFeeP);
         }
@@ -145,10 +133,7 @@ library ReferralsUtils {
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function overrideAllyFeeP(
-        address[] calldata _allies,
-        uint24[] calldata _allyFeeP
-    ) internal {
+    function overrideAllyFeeP(address[] calldata _allies, uint24[] calldata _allyFeeP) internal {
         IReferrals.ReferralsStorage storage s = _getStorage();
 
         for (uint256 i = 0; i < _allies.length; ++i) {
@@ -156,8 +141,9 @@ library ReferralsUtils {
             if (!s.allyDetails[ally].active) continue;
 
             uint24 allyFeeP = _allyFeeP[i];
-            if (allyFeeP > MAX_ALLY_FEE_P * 1e3)
+            if (allyFeeP > MAX_ALLY_FEE_P * 1e3) {
                 revert IGeneralErrors.AboveMax();
+            }
 
             s.referralSettingsOverrides[ally].allyFeeOverrideP = allyFeeP;
 
@@ -168,20 +154,11 @@ library ReferralsUtils {
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function registerPotentialReferrer(
-        address _trader,
-        address _referrer
-    ) internal {
+    function registerPotentialReferrer(address _trader, address _referrer) internal {
         IReferralsUtils.ReferralsStorage storage s = _getStorage();
-        IReferralsUtils.ReferrerDetails storage r = s.referrerDetails[
-            _referrer
-        ];
+        IReferralsUtils.ReferrerDetails storage r = s.referrerDetails[_referrer];
 
-        if (
-            s.referrerByTrader[_trader] != address(0) ||
-            _referrer == address(0) ||
-            !r.active
-        ) {
+        if (s.referrerByTrader[_trader] != address(0) || _referrer == address(0) || !r.active) {
             return;
         }
 
@@ -209,13 +186,9 @@ library ReferralsUtils {
             return;
         }
 
-        uint256 referrerRewardGns = (_referrerFeeUsd * ConstantsUtils.P_10) /
-            _gnsPriceUsd;
+        uint256 referrerRewardGns = (_referrerFeeUsd * ConstantsUtils.P_10) / _gnsPriceUsd;
 
-        IERC20(AddressStoreUtils.getAddresses().gns).mint(
-            address(this),
-            referrerRewardGns
-        );
+        IERC20(AddressStoreUtils.getAddresses().gns).mint(address(this), referrerRewardGns);
 
         IReferralsUtils.AllyDetails storage a = s.allyDetails[r.ally];
 
@@ -223,12 +196,8 @@ library ReferralsUtils {
         uint256 allyRewardGns;
 
         if (a.active) {
-            uint24 allyFeeOverrideP = s
-                .referralSettingsOverrides[r.ally]
-                .allyFeeOverrideP;
-            uint256 allyFeeP = allyFeeOverrideP > 0
-                ? allyFeeOverrideP
-                : s.allyFeeP * 1e3;
+            uint24 allyFeeOverrideP = s.referralSettingsOverrides[r.ally].allyFeeOverrideP;
+            uint256 allyFeeP = allyFeeOverrideP > 0 ? allyFeeOverrideP : s.allyFeeP * 1e3;
 
             allyRewardValueUsd = (_referrerFeeUsd * allyFeeP) / 100 / 1e3;
             allyRewardGns = (referrerRewardGns * allyFeeP) / 100 / 1e3;
@@ -241,13 +210,7 @@ library ReferralsUtils {
             _referrerFeeUsd -= allyRewardValueUsd;
             referrerRewardGns -= allyRewardGns;
 
-            emit IReferralsUtils.AllyRewardDistributed(
-                r.ally,
-                _trader,
-                _volumeUsd,
-                allyRewardGns,
-                allyRewardValueUsd
-            );
+            emit IReferralsUtils.AllyRewardDistributed(r.ally, _trader, _volumeUsd, allyRewardGns, allyRewardValueUsd);
         }
 
         r.volumeReferredUsd += _volumeUsd;
@@ -256,11 +219,7 @@ library ReferralsUtils {
         r.totalRewardsValueUsd += _referrerFeeUsd;
 
         emit IReferralsUtils.ReferrerRewardDistributed(
-            referrer,
-            _trader,
-            _volumeUsd,
-            referrerRewardGns,
-            _referrerFeeUsd
+            referrer, _trader, _volumeUsd, referrerRewardGns, _referrerFeeUsd
         );
     }
 
@@ -268,18 +227,13 @@ library ReferralsUtils {
      * @dev Check IReferralsUtils interface for documentation
      */
     function claimAllyRewards() internal {
-        IReferralsUtils.AllyDetails storage a = _getStorage().allyDetails[
-            msg.sender
-        ];
+        IReferralsUtils.AllyDetails storage a = _getStorage().allyDetails[msg.sender];
         uint256 rewardsGns = a.pendingRewardsGns;
 
         if (rewardsGns == 0) revert IReferralsUtils.NoPendingRewards();
 
         a.pendingRewardsGns = 0;
-        IERC20(AddressStoreUtils.getAddresses().gns).safeTransfer(
-            msg.sender,
-            rewardsGns
-        );
+        IERC20(AddressStoreUtils.getAddresses().gns).safeTransfer(msg.sender, rewardsGns);
 
         emit IReferralsUtils.AllyRewardsClaimed(msg.sender, rewardsGns);
     }
@@ -288,17 +242,13 @@ library ReferralsUtils {
      * @dev Check IReferralsUtils interface for documentation
      */
     function claimReferrerRewards() internal {
-        IReferralsUtils.ReferrerDetails storage r = _getStorage()
-            .referrerDetails[msg.sender];
+        IReferralsUtils.ReferrerDetails storage r = _getStorage().referrerDetails[msg.sender];
         uint256 rewardsGns = r.pendingRewardsGns;
 
         if (rewardsGns == 0) revert IReferralsUtils.NoPendingRewards();
 
         r.pendingRewardsGns = 0;
-        IERC20(AddressStoreUtils.getAddresses().gns).safeTransfer(
-            msg.sender,
-            rewardsGns
-        );
+        IERC20(AddressStoreUtils.getAddresses().gns).safeTransfer(msg.sender, rewardsGns);
 
         emit IReferralsUtils.ReferrerRewardsClaimed(msg.sender, rewardsGns);
     }
@@ -306,41 +256,29 @@ library ReferralsUtils {
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function getReferrerFeeProgressP(
-        address _referrer
-    ) internal view returns (uint256 progressP) {
+    function getReferrerFeeProgressP(address _referrer) internal view returns (uint256 progressP) {
         IReferralsUtils.ReferralsStorage storage s = _getStorage();
-        uint256 volumeReferredUsd = s
-            .referrerDetails[_referrer]
-            .volumeReferredUsd;
+        uint256 volumeReferredUsd = s.referrerDetails[_referrer].volumeReferredUsd;
         uint256 targetVolumeUsd1e18 = s.targetVolumeUsd * 1e18;
 
         progressP = s.startReferrerFeeP * ConstantsUtils.P_10;
-        progressP +=
-            ((100 * ConstantsUtils.P_10 - progressP) *
-                (
-                    volumeReferredUsd > targetVolumeUsd1e18
-                        ? targetVolumeUsd1e18
-                        : volumeReferredUsd
-                )) /
-            targetVolumeUsd1e18;
+        progressP += (
+            (100 * ConstantsUtils.P_10 - progressP)
+                * (volumeReferredUsd > targetVolumeUsd1e18 ? targetVolumeUsd1e18 : volumeReferredUsd)
+        ) / targetVolumeUsd1e18;
     }
 
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function getTraderLastReferrer(
-        address _trader
-    ) internal view returns (address) {
+    function getTraderLastReferrer(address _trader) internal view returns (address) {
         return _getStorage().referrerByTrader[_trader];
     }
 
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function getTraderActiveReferrer(
-        address _trader
-    ) internal view returns (address) {
+    function getTraderActiveReferrer(address _trader) internal view returns (address) {
         address referrer = getTraderLastReferrer(_trader);
         return getReferrerDetails(referrer).active ? referrer : address(0);
     }
@@ -348,18 +286,14 @@ library ReferralsUtils {
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function getReferrersReferred(
-        address _ally
-    ) internal view returns (address[] memory) {
+    function getReferrersReferred(address _ally) internal view returns (address[] memory) {
         return getAllyDetails(_ally).referrersReferred;
     }
 
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function getTradersReferred(
-        address _referrer
-    ) internal view returns (address[] memory) {
+    function getTradersReferred(address _referrer) internal view returns (address[] memory) {
         return getReferrerDetails(_referrer).tradersReferred;
     }
 
@@ -387,24 +321,22 @@ library ReferralsUtils {
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function getAllyDetails(
-        address _ally
-    ) internal view returns (IReferralsUtils.AllyDetails memory) {
+    function getAllyDetails(address _ally) internal view returns (IReferralsUtils.AllyDetails memory) {
         return _getStorage().allyDetails[_ally];
     }
 
     /**
      * @dev Check IReferralsUtils interface for documentation
      */
-    function getReferrerDetails(
-        address _referrer
-    ) internal view returns (IReferralsUtils.ReferrerDetails storage) {
+    function getReferrerDetails(address _referrer) internal view returns (IReferralsUtils.ReferrerDetails storage) {
         return _getStorage().referrerDetails[_referrer];
     }
 
-    function getReferralSettingsOverrides(
-        address _address
-    ) internal view returns (IReferralsUtils.ReferralSettingsOverrides memory) {
+    function getReferralSettingsOverrides(address _address)
+        internal
+        view
+        returns (IReferralsUtils.ReferralSettingsOverrides memory)
+    {
         return _getStorage().referralSettingsOverrides[_address];
     }
 
@@ -418,11 +350,7 @@ library ReferralsUtils {
     /**
      * @dev Returns storage pointer for storage struct in diamond contract, at defined slot
      */
-    function _getStorage()
-        internal
-        pure
-        returns (IReferralsUtils.ReferralsStorage storage s)
-    {
+    function _getStorage() internal pure returns (IReferralsUtils.ReferralsStorage storage s) {
         uint256 storageSlot = _getSlot();
         assembly {
             s.slot := storageSlot
@@ -436,9 +364,7 @@ library ReferralsUtils {
     function _whitelistAlly(address _ally) internal {
         if (_ally == address(0)) revert IGeneralErrors.ZeroAddress();
 
-        IReferralsUtils.AllyDetails storage a = _getStorage().allyDetails[
-            _ally
-        ];
+        IReferralsUtils.AllyDetails storage a = _getStorage().allyDetails[_ally];
         if (a.active) revert IReferralsUtils.AlreadyActive();
 
         a.active = true;
@@ -451,9 +377,7 @@ library ReferralsUtils {
      * @param _ally address of ally
      */
     function _unwhitelistAlly(address _ally) internal {
-        IReferralsUtils.AllyDetails storage a = _getStorage().allyDetails[
-            _ally
-        ];
+        IReferralsUtils.AllyDetails storage a = _getStorage().allyDetails[_ally];
         if (!a.active) revert IReferralsUtils.AlreadyInactive();
 
         a.active = false;
@@ -470,9 +394,7 @@ library ReferralsUtils {
         if (_referrer == address(0)) revert IGeneralErrors.ZeroAddress();
         IReferralsUtils.ReferralsStorage storage s = _getStorage();
 
-        IReferralsUtils.ReferrerDetails storage r = s.referrerDetails[
-            _referrer
-        ];
+        IReferralsUtils.ReferrerDetails storage r = s.referrerDetails[_referrer];
         if (r.active) revert IReferralsUtils.AlreadyActive();
 
         r.active = true;
@@ -493,8 +415,7 @@ library ReferralsUtils {
      * @param _referrer address of referrer
      */
     function _unwhitelistReferrer(address _referrer) internal {
-        IReferralsUtils.ReferrerDetails storage r = _getStorage()
-            .referrerDetails[_referrer];
+        IReferralsUtils.ReferrerDetails storage r = _getStorage().referrerDetails[_referrer];
         if (!r.active) revert IReferralsUtils.AlreadyInactive();
 
         r.active = false;

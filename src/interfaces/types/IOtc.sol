@@ -12,7 +12,8 @@ interface IOtc {
     }
 
     struct OtcConfig {
-        address gnsTreasury; /// @custom:deprecated Use `AddressStore.globalAddresses.treasury` instead
+        address gnsTreasury;
+        /// @custom:deprecated Use `AddressStore.globalAddresses.treasury` instead
         uint64 treasuryShareP; // %, 1e10 precision
         uint64 stakingShareP; // %, 1e10 precision
         uint64 burnShareP; // %, 1e10 precision

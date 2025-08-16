@@ -19,36 +19,26 @@ contract GNSOtc is GNSAddressStore, IOtcUtils {
     }
 
     /// @inheritdoc IOtcUtils
-    function initializeOtc(
-        IOtcUtils.OtcConfig memory _config
-    ) external reinitializer(12) {
+    function initializeOtc(IOtcUtils.OtcConfig memory _config) external reinitializer(12) {
         OtcUtils.initializeOtc(_config);
     }
 
     // Management Setters
 
     /// @inheritdoc IOtcUtils
-    function updateOtcConfig(
-        IOtcUtils.OtcConfig memory _config
-    ) external onlyRole(Role.GOV) {
+    function updateOtcConfig(IOtcUtils.OtcConfig memory _config) external onlyRole(Role.GOV) {
         OtcUtils.updateOtcConfig(_config);
     }
 
     // Interactions
 
     /// @inheritdoc IOtcUtils
-    function addOtcCollateralBalance(
-        uint8 _collateralIndex,
-        uint256 _collateralAmount
-    ) external virtual onlySelf {
+    function addOtcCollateralBalance(uint8 _collateralIndex, uint256 _collateralAmount) external virtual onlySelf {
         OtcUtils.addOtcCollateralBalance(_collateralIndex, _collateralAmount);
     }
 
     /// @inheritdoc IOtcUtils
-    function sellGnsForCollateral(
-        uint8 _collateralIndex,
-        uint256 _collateralAmount
-    ) external {
+    function sellGnsForCollateral(uint8 _collateralIndex, uint256 _collateralAmount) external {
         OtcUtils.sellGnsForCollateral(_collateralIndex, _collateralAmount);
     }
 
@@ -60,16 +50,12 @@ contract GNSOtc is GNSAddressStore, IOtcUtils {
     }
 
     /// @inheritdoc IOtcUtils
-    function getOtcBalance(
-        uint8 _collateralIndex
-    ) external view returns (uint256) {
+    function getOtcBalance(uint8 _collateralIndex) external view returns (uint256) {
         return OtcUtils.getOtcBalance(_collateralIndex);
     }
 
     /// @inheritdoc IOtcUtils
-    function getOtcRate(
-        uint8 _collateralIndex
-    ) external view returns (uint256) {
+    function getOtcRate(uint8 _collateralIndex) external view returns (uint256) {
         return OtcUtils.getOtcRate(_collateralIndex);
     }
 }

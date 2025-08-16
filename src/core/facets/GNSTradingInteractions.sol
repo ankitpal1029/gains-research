@@ -12,11 +12,7 @@ import "../../libraries/TradingInteractionsUtils.sol";
 /**
  * @dev Facet #7: Trading (user interactions)
  */
-contract GNSTradingInteractions is
-    GNSAddressStore,
-    GNSReentrancyGuard,
-    ITradingInteractionsUtils
-{
+contract GNSTradingInteractions is GNSAddressStore, GNSReentrancyGuard, ITradingInteractionsUtils {
     // Initialization
 
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -25,30 +21,25 @@ contract GNSTradingInteractions is
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function initializeTrading(
-        uint16 _marketOrdersTimeoutBlocks,
-        address[] memory _usersByPassTriggerLink
-    ) external reinitializer(8) {
-        TradingInteractionsUtils.initializeTrading(
-            _marketOrdersTimeoutBlocks,
-            _usersByPassTriggerLink
-        );
+    function initializeTrading(uint16 _marketOrdersTimeoutBlocks, address[] memory _usersByPassTriggerLink)
+        external
+        reinitializer(8)
+    {
+        TradingInteractionsUtils.initializeTrading(_marketOrdersTimeoutBlocks, _usersByPassTriggerLink);
     }
 
     // Management Setters
 
     /// @inheritdoc ITradingInteractionsUtils
-    function updateMarketOrdersTimeoutBlocks(
-        uint16 _valueBlocks
-    ) external onlyRole(Role.GOV) {
+    function updateMarketOrdersTimeoutBlocks(uint16 _valueBlocks) external onlyRole(Role.GOV) {
         TradingInteractionsUtils.updateMarketOrdersTimeoutBlocks(_valueBlocks);
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function updateByPassTriggerLink(
-        address[] memory _users,
-        bool[] memory _shouldByPass
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function updateByPassTriggerLink(address[] memory _users, bool[] memory _shouldByPass)
+        external
+        onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY)
+    {
         TradingInteractionsUtils.updateByPassTriggerLink(_users, _shouldByPass);
     }
 
@@ -65,70 +56,43 @@ contract GNSTradingInteractions is
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function delegatedTradingAction(
-        address _trader,
-        bytes calldata _callData
-    ) external returns (bytes memory) {
-        return
-            TradingInteractionsUtils.delegatedTradingAction(_trader, _callData);
+    function delegatedTradingAction(address _trader, bytes calldata _callData) external returns (bytes memory) {
+        return TradingInteractionsUtils.delegatedTradingAction(_trader, _callData);
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function openTrade(
-        ITradingStorage.Trade memory _trade,
-        uint16 _maxSlippageP,
-        address _referrer
-    ) external nonReentrant {
+    function openTrade(ITradingStorage.Trade memory _trade, uint16 _maxSlippageP, address _referrer)
+        external
+        nonReentrant
+    {
         TradingInteractionsUtils.openTrade(_trade, _maxSlippageP, _referrer);
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function openTradeNative(
-        ITradingStorage.Trade memory _trade,
-        uint16 _maxSlippageP,
-        address _referrer
-    ) external payable nonReentrant {
-        TradingInteractionsUtils.openTradeNative(
-            _trade,
-            _maxSlippageP,
-            _referrer
-        );
+    function openTradeNative(ITradingStorage.Trade memory _trade, uint16 _maxSlippageP, address _referrer)
+        external
+        payable
+        nonReentrant
+    {
+        TradingInteractionsUtils.openTradeNative(_trade, _maxSlippageP, _referrer);
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function updateMaxClosingSlippageP(
-        uint32 _index,
-        uint16 _maxSlippageP
-    ) external nonReentrant {
-        TradingInteractionsUtils.updateMaxClosingSlippageP(
-            _index,
-            _maxSlippageP
-        );
+    function updateMaxClosingSlippageP(uint32 _index, uint16 _maxSlippageP) external nonReentrant {
+        TradingInteractionsUtils.updateMaxClosingSlippageP(_index, _maxSlippageP);
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function closeTradeMarket(
-        uint32 _index,
-        uint64 _expectedPrice
-    ) external nonReentrant {
+    function closeTradeMarket(uint32 _index, uint64 _expectedPrice) external nonReentrant {
         TradingInteractionsUtils.closeTradeMarket(_index, _expectedPrice);
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function updateOpenOrder(
-        uint32 _index,
-        uint64 _triggerPrice,
-        uint64 _tp,
-        uint64 _sl,
-        uint16 _maxSlippageP
-    ) external nonReentrant {
-        TradingInteractionsUtils.updateOpenOrder(
-            _index,
-            _triggerPrice,
-            _tp,
-            _sl,
-            _maxSlippageP
-        );
+    function updateOpenOrder(uint32 _index, uint64 _triggerPrice, uint64 _tp, uint64 _sl, uint16 _maxSlippageP)
+        external
+        nonReentrant
+    {
+        TradingInteractionsUtils.updateOpenOrder(_index, _triggerPrice, _tp, _sl, _maxSlippageP);
     }
 
     /// @inheritdoc ITradingInteractionsUtils
@@ -147,18 +111,12 @@ contract GNSTradingInteractions is
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function updateLeverage(
-        uint32 _index,
-        uint24 _newLeverage
-    ) external nonReentrant {
+    function updateLeverage(uint32 _index, uint24 _newLeverage) external nonReentrant {
         TradingInteractionsUtils.updateLeverage(_index, _newLeverage);
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function updateLeverageNative(
-        uint32 _index,
-        uint24 _newLeverage
-    ) external payable nonReentrant {
+    function updateLeverageNative(uint32 _index, uint24 _newLeverage) external payable nonReentrant {
         TradingInteractionsUtils.updateLeverageNative(_index, _newLeverage);
     }
 
@@ -171,11 +129,7 @@ contract GNSTradingInteractions is
         uint16 _maxSlippageP
     ) external nonReentrant {
         TradingInteractionsUtils.increasePositionSize(
-            _index,
-            _collateralDelta,
-            _leverageDelta,
-            _expectedPrice,
-            _maxSlippageP
+            _index, _collateralDelta, _leverageDelta, _expectedPrice, _maxSlippageP
         );
     }
 
@@ -188,27 +142,16 @@ contract GNSTradingInteractions is
         uint16 _maxSlippageP
     ) external payable nonReentrant {
         TradingInteractionsUtils.increasePositionSizeNative(
-            _index,
-            _collateralDelta,
-            _leverageDelta,
-            _expectedPrice,
-            _maxSlippageP
+            _index, _collateralDelta, _leverageDelta, _expectedPrice, _maxSlippageP
         );
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function decreasePositionSize(
-        uint32 _index,
-        uint120 _collateralDelta,
-        uint24 _leverageDelta,
-        uint64 _expectedPrice
-    ) external nonReentrant {
-        TradingInteractionsUtils.decreasePositionSize(
-            _index,
-            _collateralDelta,
-            _leverageDelta,
-            _expectedPrice
-        );
+    function decreasePositionSize(uint32 _index, uint120 _collateralDelta, uint24 _leverageDelta, uint64 _expectedPrice)
+        external
+        nonReentrant
+    {
+        TradingInteractionsUtils.decreasePositionSize(_index, _collateralDelta, _leverageDelta, _expectedPrice);
     }
 
     /// @inheritdoc ITradingInteractionsUtils
@@ -234,9 +177,7 @@ contract GNSTradingInteractions is
     }
 
     /// @inheritdoc ITradingInteractionsUtils
-    function getTradingDelegate(
-        address _trader
-    ) external view returns (address) {
+    function getTradingDelegate(address _trader) external view returns (address) {
         return TradingInteractionsUtils.getTradingDelegate(_trader);
     }
 

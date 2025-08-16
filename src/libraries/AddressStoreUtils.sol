@@ -20,11 +20,7 @@ library AddressStoreUtils {
     /**
      * @dev Returns storage pointer for Addresses struct in global diamond contract, at defined slot
      */
-    function getAddresses()
-        internal
-        pure
-        returns (IAddressStore.Addresses storage s)
-    {
+    function getAddresses() internal pure returns (IAddressStore.Addresses storage s) {
         uint256 storageSlot = _getSlot();
         assembly {
             s.slot := storageSlot

@@ -32,11 +32,7 @@ interface IGNSAddressStore is IAddressStore, IGeneralErrors {
      * @param _roleA first role to check
      * @param _roleB second role to check
      */
-    function hasRoles(
-        address _account,
-        Role _roleA,
-        Role _roleB
-    ) external view returns (bool);
+    function hasRoles(address _account, Role _roleA, Role _roleB) external view returns (bool);
 
     /**
      * @dev Updates access control for a list of accounts
@@ -44,11 +40,7 @@ interface IGNSAddressStore is IAddressStore, IGeneralErrors {
      * @param _roles corresponding roles to update
      * @param _values corresponding new values to set
      */
-    function setRoles(
-        address[] calldata _accounts,
-        Role[] calldata _roles,
-        bool[] calldata _values
-    ) external;
+    function setRoles(address[] calldata _accounts, Role[] calldata _roles, bool[] calldata _values) external;
 
     /**
      * @dev Emitted when addresses are updated

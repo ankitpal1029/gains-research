@@ -17,11 +17,7 @@ interface IGNSDiamondCut is IDiamondStorage {
      * @param _init The address of the contract or facet to execute _calldata
      * @param _calldata A function call, including function selector and arguments _calldata is executed with delegatecall on _init
      */
-    function diamondCut(
-        FacetCut[] calldata _diamondCut,
-        address _init,
-        bytes calldata _calldata
-    ) external;
+    function diamondCut(FacetCut[] calldata _diamondCut, address _init, bytes calldata _calldata) external;
 
     /**
      * @dev Emitted when function selectors of a facet of the diamond is added, replaced, or removed
@@ -31,10 +27,7 @@ interface IGNSDiamondCut is IDiamondStorage {
      */
     event DiamondCut(FacetCut[] _diamondCut, address _init, bytes _calldata);
 
-    error InitializationFunctionReverted(
-        address _initializationContractAddress,
-        bytes _calldata
-    );
+    error InitializationFunctionReverted(address _initializationContractAddress, bytes _calldata);
     error InvalidFacetCutAction();
     error NotContract();
     error NotFound();

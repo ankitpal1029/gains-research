@@ -46,14 +46,11 @@ interface IGToken {
 
     function currentEpochPositiveOpenPnl() external view returns (uint256);
 
-    function updateAccPnlPerTokenUsed(
-        uint256 prevPositiveOpenPnl,
-        uint256 newPositiveOpenPnl
-    ) external returns (uint256);
+    function updateAccPnlPerTokenUsed(uint256 prevPositiveOpenPnl, uint256 newPositiveOpenPnl)
+        external
+        returns (uint256);
 
-    function getLockedDeposit(
-        uint256 depositId
-    ) external view returns (LockedDeposit memory);
+    function getLockedDeposit(uint256 depositId) external view returns (LockedDeposit memory);
 
     function sendAssets(uint256 assets, address receiver) external;
 
@@ -89,47 +86,21 @@ interface IGToken {
     event OpenTradesPnlFeedCallFailed();
 
     event WithdrawRequested(
-        address indexed sender,
-        address indexed owner,
-        uint256 shares,
-        uint256 currEpoch,
-        uint256 indexed unlockEpoch
+        address indexed sender, address indexed owner, uint256 shares, uint256 currEpoch, uint256 indexed unlockEpoch
     );
     event WithdrawCanceled(
-        address indexed sender,
-        address indexed owner,
-        uint256 shares,
-        uint256 currEpoch,
-        uint256 indexed unlockEpoch
+        address indexed sender, address indexed owner, uint256 shares, uint256 currEpoch, uint256 indexed unlockEpoch
     );
 
-    event DepositLocked(
-        address indexed sender,
-        address indexed owner,
-        uint256 depositId,
-        LockedDeposit d
-    );
+    event DepositLocked(address indexed sender, address indexed owner, uint256 depositId, LockedDeposit d);
     event DepositUnlocked(
-        address indexed sender,
-        address indexed receiver,
-        address indexed owner,
-        uint256 depositId,
-        LockedDeposit d
+        address indexed sender, address indexed receiver, address indexed owner, uint256 depositId, LockedDeposit d
     );
 
     event RewardDistributed(address indexed sender, uint256 assets);
 
-    event AssetsSent(
-        address indexed sender,
-        address indexed receiver,
-        uint256 assets
-    );
-    event AssetsReceived(
-        address indexed sender,
-        address indexed user,
-        uint256 assets,
-        uint256 assetsLessDeplete
-    );
+    event AssetsSent(address indexed sender, address indexed receiver, uint256 assets);
+    event AssetsReceived(address indexed sender, address indexed user, uint256 assets, uint256 assetsLessDeplete);
 
     event Depleted(address indexed sender, uint256 assets, uint256 amountGns);
     event Refilled(address indexed sender, uint256 assets, uint256 amountGns);

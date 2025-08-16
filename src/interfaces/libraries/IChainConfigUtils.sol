@@ -12,18 +12,13 @@ interface IChainConfigUtils is IChainConfig {
      * @param _nativeTransferGasLimit new native transfer gas limit
      * @param _nativeTransferEnabled whether native transfers should be enabled
      */
-    function initializeChainConfig(
-        uint16 _nativeTransferGasLimit,
-        bool _nativeTransferEnabled
-    ) external;
+    function initializeChainConfig(uint16 _nativeTransferGasLimit, bool _nativeTransferEnabled) external;
 
     /**
      * @dev Updates native transfer gas limit
      * @param _nativeTransferGasLimit new native transfer gas limit. Must be greater or equal to MIN_NATIVE_TRANSFER_GAS_LIMIT.
      */
-    function updateNativeTransferGasLimit(
-        uint16 _nativeTransferGasLimit
-    ) external;
+    function updateNativeTransferGasLimit(uint16 _nativeTransferGasLimit) external;
 
     /**
      * @dev Updates `nativeTransferEnabled`. When true, the diamond is allowed to unwrap native tokens on transfer-out.

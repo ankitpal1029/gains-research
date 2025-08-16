@@ -24,10 +24,7 @@ interface IOtcUtils is IOtc {
      * @param _collateralIndex collateral index
      * @param _collateralAmount amount of collateral to increase (collateral precision)
      */
-    function addOtcCollateralBalance(
-        uint8 _collateralIndex,
-        uint256 _collateralAmount
-    ) external;
+    function addOtcCollateralBalance(uint8 _collateralIndex, uint256 _collateralAmount) external;
 
     /**
      * @dev OTC Buys GNS from caller for `_amountCollateral` of `_collateralIndex`.
@@ -36,10 +33,7 @@ interface IOtcUtils is IOtc {
      * @param _collateralIndex collateral index
      * @param _collateralAmount amount of collateral to trade (collateral precision)
      */
-    function sellGnsForCollateral(
-        uint8 _collateralIndex,
-        uint256 _collateralAmount
-    ) external;
+    function sellGnsForCollateral(uint8 _collateralIndex, uint256 _collateralAmount) external;
 
     /**
      * @dev Returns OTC Config
@@ -50,9 +44,7 @@ interface IOtcUtils is IOtc {
      * @dev Returns OTC balance for a collateral (collateral precision)
      * @param _collateralIndex collateral index
      */
-    function getOtcBalance(
-        uint8 _collateralIndex
-    ) external view returns (uint256);
+    function getOtcBalance(uint8 _collateralIndex) external view returns (uint256);
 
     /**
      * @dev Returns OTC rate (price + premium) of GNS in collateral (1e10)
@@ -71,10 +63,7 @@ interface IOtcUtils is IOtc {
      * @param collateralIndex collateral index
      * @param balanceCollateral new balance (collateral precision)
      */
-    event OtcBalanceUpdated(
-        uint8 indexed collateralIndex,
-        uint256 balanceCollateral
-    );
+    event OtcBalanceUpdated(uint8 indexed collateralIndex, uint256 balanceCollateral);
 
     /**
      * @dev Emitted when an OTC trade is executed

@@ -20,9 +20,7 @@ library CollateralUtils {
      *
      * @param   _token collateral token address
      */
-    function getCollateralConfig(
-        address _token
-    ) internal view returns (CollateralConfig memory _meta) {
+    function getCollateralConfig(address _token) internal view returns (CollateralConfig memory _meta) {
         uint256 _decimals = uint256(IERC20(_token).decimals());
 
         _meta.precision = uint128(10 ** _decimals);

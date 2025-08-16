@@ -19,29 +19,22 @@ contract GNSChainConfig is GNSAddressStore, IChainConfigUtils {
     }
 
     /// @inheritdoc IChainConfigUtils
-    function initializeChainConfig(
-        uint16 _nativeTransferGasLimit,
-        bool _nativeTransferEnabled
-    ) external reinitializer(18) {
-        ChainConfigUtils.initializeChainConfig(
-            _nativeTransferGasLimit,
-            _nativeTransferEnabled
-        );
+    function initializeChainConfig(uint16 _nativeTransferGasLimit, bool _nativeTransferEnabled)
+        external
+        reinitializer(18)
+    {
+        ChainConfigUtils.initializeChainConfig(_nativeTransferGasLimit, _nativeTransferEnabled);
     }
 
     // Management Setters
 
     /// @inheritdoc IChainConfigUtils
-    function updateNativeTransferGasLimit(
-        uint16 _nativeTransferGasLimit
-    ) external onlyRole(Role.GOV_EMERGENCY) {
+    function updateNativeTransferGasLimit(uint16 _nativeTransferGasLimit) external onlyRole(Role.GOV_EMERGENCY) {
         ChainConfigUtils.updateNativeTransferGasLimit(_nativeTransferGasLimit);
     }
 
     /// @inheritdoc IChainConfigUtils
-    function updateNativeTransferEnabled(
-        bool _nativeTransferEnabled
-    ) external onlyRole(Role.GOV_EMERGENCY) {
+    function updateNativeTransferEnabled(bool _nativeTransferEnabled) external onlyRole(Role.GOV_EMERGENCY) {
         ChainConfigUtils.updateNativeTransferEnabled(_nativeTransferEnabled);
     }
 

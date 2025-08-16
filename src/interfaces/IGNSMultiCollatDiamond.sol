@@ -36,6 +36,4 @@ interface IGNSMultiCollatDiamond is
     IOtcUtils,
     IMulticall,
     IChainConfigUtils
-{
-
-}
+{}

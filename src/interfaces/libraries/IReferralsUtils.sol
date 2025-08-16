@@ -13,11 +13,7 @@ interface IReferralsUtils is IReferrals {
      * @param _startReferrerFeeP initial % of total referral fee earned when zero volume referred
      * @param _targetVolumeUsd usd opening volume to refer to reach 100% of referral fee
      */
-    function initializeReferrals(
-        uint256 _allyFeeP,
-        uint256 _startReferrerFeeP,
-        uint256 _targetVolumeUsd
-    ) external;
+    function initializeReferrals(uint256 _allyFeeP, uint256 _startReferrerFeeP, uint256 _targetVolumeUsd) external;
 
     /**
      * @dev Updates allyFeeP
@@ -54,10 +50,7 @@ interface IReferralsUtils is IReferrals {
      * @param _referrers array of referrer addresses
      * @param _allies array of corresponding ally addresses
      */
-    function whitelistReferrers(
-        address[] calldata _referrers,
-        address[] calldata _allies
-    ) external;
+    function whitelistReferrers(address[] calldata _referrers, address[] calldata _allies) external;
 
     /**
      * @dev Unwhitelists referrer addresses
@@ -70,30 +63,21 @@ interface IReferralsUtils is IReferrals {
      * @param _referrers array of referrer addresses
      * @param _referralFeeP array of referral fee % (1e3)
      */
-    function overrideReferralFeeP(
-        address[] calldata _referrers,
-        uint24[] calldata _referralFeeP
-    ) external;
+    function overrideReferralFeeP(address[] calldata _referrers, uint24[] calldata _referralFeeP) external;
 
     /**
      * @dev Overrides ally fee % share of total trading fee for allies
      * @param _allies array of ally addresses
      * @param _allyFeeP array of ally fee % (1e3)
      */
-    function overrideAllyFeeP(
-        address[] calldata _allies,
-        uint24[] calldata _allyFeeP
-    ) external;
+    function overrideAllyFeeP(address[] calldata _allies, uint24[] calldata _allyFeeP) external;
 
     /**
      * @dev Registers potential referrer for trader (only works if trader wasn't referred yet by someone else)
      * @param _trader trader address
      * @param _referral referrer address
      */
-    function registerPotentialReferrer(
-        address _trader,
-        address _referral
-    ) external;
+    function registerPotentialReferrer(address _trader, address _referral) external;
 
     /**
      * @dev Distributes ally and referrer rewards
@@ -123,41 +107,31 @@ interface IReferralsUtils is IReferrals {
      * @dev Returns referrer fee % progress towards earning 100% based on his volume referred (1e10)
      * @param _referrer referrer address
      */
-    function getReferrerFeeProgressP(
-        address _referrer
-    ) external view returns (uint256);
+    function getReferrerFeeProgressP(address _referrer) external view returns (uint256);
 
     /**
      * @dev Returns last referrer of trader (whether referrer active or not)
      * @param _trader address of trader
      */
-    function getTraderLastReferrer(
-        address _trader
-    ) external view returns (address);
+    function getTraderLastReferrer(address _trader) external view returns (address);
 
     /**
      * @dev Returns active referrer of trader
      * @param _trader address of trader
      */
-    function getTraderActiveReferrer(
-        address _trader
-    ) external view returns (address);
+    function getTraderActiveReferrer(address _trader) external view returns (address);
 
     /**
      * @dev Returns referrers referred by ally
      * @param _ally address of ally
      */
-    function getReferrersReferred(
-        address _ally
-    ) external view returns (address[] memory);
+    function getReferrersReferred(address _ally) external view returns (address[] memory);
 
     /**
      * @dev Returns traders referred by referrer
      * @param _referrer address of referrer
      */
-    function getTradersReferred(
-        address _referrer
-    ) external view returns (address[] memory);
+    function getTradersReferred(address _referrer) external view returns (address[] memory);
 
     /**
      * @dev Returns ally fee % of total referral fee
@@ -178,25 +152,19 @@ interface IReferralsUtils is IReferrals {
      * @dev Returns ally details
      * @param _ally address of ally
      */
-    function getAllyDetails(
-        address _ally
-    ) external view returns (AllyDetails memory);
+    function getAllyDetails(address _ally) external view returns (AllyDetails memory);
 
     /**
      * @dev Returns referrer details
      * @param _referrer address of referrer
      */
-    function getReferrerDetails(
-        address _referrer
-    ) external view returns (ReferrerDetails memory);
+    function getReferrerDetails(address _referrer) external view returns (ReferrerDetails memory);
 
     /**
      * @dev Returns referral settings overrides
      * @param _address address of referrer/ally
      */
-    function getReferralSettingsOverrides(
-        address _address
-    ) external view returns (ReferralSettingsOverrides memory);
+    function getReferralSettingsOverrides(address _address) external view returns (ReferralSettingsOverrides memory);
 
     /**
      * @dev Emitted when allyFeeP is updated
@@ -261,11 +229,7 @@ interface IReferralsUtils is IReferrals {
      * @param amountValueUsd USD value of GNS reward (1e18 precision)
      */
     event AllyRewardDistributed(
-        address indexed ally,
-        address indexed trader,
-        uint256 volumeUsd,
-        uint256 amountGns,
-        uint256 amountValueUsd
+        address indexed ally, address indexed trader, uint256 volumeUsd, uint256 amountGns, uint256 amountValueUsd
     );
 
     /**
@@ -277,11 +241,7 @@ interface IReferralsUtils is IReferrals {
      * @param amountValueUsd USD value of GNS reward (1e18 precision)
      */
     event ReferrerRewardDistributed(
-        address indexed referrer,
-        address indexed trader,
-        uint256 volumeUsd,
-        uint256 amountGns,
-        uint256 amountValueUsd
+        address indexed referrer, address indexed trader, uint256 volumeUsd, uint256 amountGns, uint256 amountValueUsd
     );
 
     /**

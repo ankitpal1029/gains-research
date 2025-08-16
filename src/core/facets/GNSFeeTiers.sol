@@ -26,32 +26,24 @@ contract GNSFeeTiers is GNSAddressStore, IFeeTiersUtils {
         uint256[] calldata _feeTiersIndices,
         IFeeTiersUtils.FeeTier[] calldata _feeTiers
     ) external reinitializer(4) {
-        FeeTiersUtils.initializeFeeTiers(
-            _groupIndices,
-            _groupVolumeMultipliers,
-            _feeTiersIndices,
-            _feeTiers
-        );
+        FeeTiersUtils.initializeFeeTiers(_groupIndices, _groupVolumeMultipliers, _feeTiersIndices, _feeTiers);
     }
 
     // Management Setters
 
     /// @inheritdoc IFeeTiersUtils
-    function setGroupVolumeMultipliers(
-        uint256[] calldata _groupIndices,
-        uint256[] calldata _groupVolumeMultipliers
-    ) external onlyRole(Role.GOV) {
-        FeeTiersUtils.setGroupVolumeMultipliers(
-            _groupIndices,
-            _groupVolumeMultipliers
-        );
+    function setGroupVolumeMultipliers(uint256[] calldata _groupIndices, uint256[] calldata _groupVolumeMultipliers)
+        external
+        onlyRole(Role.GOV)
+    {
+        FeeTiersUtils.setGroupVolumeMultipliers(_groupIndices, _groupVolumeMultipliers);
     }
 
     /// @inheritdoc IFeeTiersUtils
-    function setFeeTiers(
-        uint256[] calldata _feeTiersIndices,
-        IFeeTiersUtils.FeeTier[] calldata _feeTiers
-    ) external onlyRole(Role.GOV) {
+    function setFeeTiers(uint256[] calldata _feeTiersIndices, IFeeTiersUtils.FeeTier[] calldata _feeTiers)
+        external
+        onlyRole(Role.GOV)
+    {
         FeeTiersUtils.setFeeTiers(_feeTiersIndices, _feeTiers);
     }
 
@@ -69,40 +61,21 @@ contract GNSFeeTiers is GNSAddressStore, IFeeTiersUtils {
         IFeeTiersUtils.CreditType[] calldata _creditTypes,
         uint224[] calldata _points
     ) external onlyRole(Role.GOV) {
-        FeeTiersUtils.addTradersUnclaimedPoints(
-            _traders,
-            _creditTypes,
-            _points
-        );
+        FeeTiersUtils.addTradersUnclaimedPoints(_traders, _creditTypes, _points);
     }
 
     // Interactions
 
     /// @inheritdoc IFeeTiersUtils
-    function updateTraderPoints(
-        address _trader,
-        uint256 _volumeUsd,
-        uint256 _pairIndex
-    ) external virtual onlySelf {
-        FeeTiersUtils.updateTraderPoints(
-            _trader,
-            _volumeUsd,
-            PairsStorageUtils.pairFeeIndex(_pairIndex)
-        );
+    function updateTraderPoints(address _trader, uint256 _volumeUsd, uint256 _pairIndex) external virtual onlySelf {
+        FeeTiersUtils.updateTraderPoints(_trader, _volumeUsd, PairsStorageUtils.pairFeeIndex(_pairIndex));
     }
 
     // Getters
 
     /// @inheritdoc IFeeTiersUtils
-    function calculateFeeAmount(
-        address _trader,
-        uint256 _normalFeeAmountCollateral
-    ) external view returns (uint256) {
-        return
-            FeeTiersUtils.calculateFeeAmount(
-                _trader,
-                _normalFeeAmountCollateral
-            );
+    function calculateFeeAmount(address _trader, uint256 _normalFeeAmountCollateral) external view returns (uint256) {
+        return FeeTiersUtils.calculateFeeAmount(_trader, _normalFeeAmountCollateral);
     }
 
     /// @inheritdoc IFeeTiersUtils
@@ -111,45 +84,40 @@ contract GNSFeeTiers is GNSAddressStore, IFeeTiersUtils {
     }
 
     /// @inheritdoc IFeeTiersUtils
-    function getFeeTier(
-        uint256 _feeTierIndex
-    ) external view returns (IFeeTiersUtils.FeeTier memory) {
+    function getFeeTier(uint256 _feeTierIndex) external view returns (IFeeTiersUtils.FeeTier memory) {
         return FeeTiersUtils.getFeeTier(_feeTierIndex);
     }
 
     /// @inheritdoc IFeeTiersUtils
-    function getGroupVolumeMultiplier(
-        uint256 _groupIndex
-    ) external view returns (uint256) {
+    function getGroupVolumeMultiplier(uint256 _groupIndex) external view returns (uint256) {
         return FeeTiersUtils.getGroupVolumeMultiplier(_groupIndex);
     }
 
     /// @inheritdoc IFeeTiersUtils
-    function getFeeTiersTraderInfo(
-        address _trader
-    ) external view returns (IFeeTiersUtils.TraderInfo memory) {
+    function getFeeTiersTraderInfo(address _trader) external view returns (IFeeTiersUtils.TraderInfo memory) {
         return FeeTiersUtils.getFeeTiersTraderInfo(_trader);
     }
 
     /// @inheritdoc IFeeTiersUtils
-    function getFeeTiersTraderDailyInfo(
-        address _trader,
-        uint32 _day
-    ) external view returns (IFeeTiersUtils.TraderDailyInfo memory) {
+    function getFeeTiersTraderDailyInfo(address _trader, uint32 _day)
+        external
+        view
+        returns (IFeeTiersUtils.TraderDailyInfo memory)
+    {
         return FeeTiersUtils.getFeeTiersTraderDailyInfo(_trader, _day);
     }
 
     /// @inheritdoc IFeeTiersUtils
-    function getTraderFeeTiersEnrollment(
-        address _trader
-    ) external view returns (IFeeTiersUtils.TraderEnrollment memory) {
+    function getTraderFeeTiersEnrollment(address _trader)
+        external
+        view
+        returns (IFeeTiersUtils.TraderEnrollment memory)
+    {
         return FeeTiersUtils.getTraderFeeTiersEnrollment(_trader);
     }
 
     /// @inheritdoc IFeeTiersUtils
-    function getTraderUnclaimedPoints(
-        address _trader
-    ) external view returns (uint224) {
+    function getTraderUnclaimedPoints(address _trader) external view returns (uint224) {
         return FeeTiersUtils.getTraderUnclaimedPoints(_trader);
     }
 }

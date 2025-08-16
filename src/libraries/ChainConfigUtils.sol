@@ -15,10 +15,7 @@ library ChainConfigUtils {
     /**
      * @dev Check IChainConfig interface for documentation
      */
-    function initializeChainConfig(
-        uint16 _nativeTransferGasLimit,
-        bool _nativeTransferEnabled
-    ) internal {
+    function initializeChainConfig(uint16 _nativeTransferGasLimit, bool _nativeTransferEnabled) internal {
         updateNativeTransferGasLimit(_nativeTransferGasLimit);
         updateNativeTransferEnabled(_nativeTransferEnabled);
     }
@@ -26,17 +23,14 @@ library ChainConfigUtils {
     /**
      * @dev Check IChainConfigUtils interface for documentation
      */
-    function updateNativeTransferGasLimit(
-        uint16 _nativeTransferGasLimit
-    ) internal {
-        if (_nativeTransferGasLimit < MIN_NATIVE_TRANSFER_GAS_LIMIT)
+    function updateNativeTransferGasLimit(uint16 _nativeTransferGasLimit) internal {
+        if (_nativeTransferGasLimit < MIN_NATIVE_TRANSFER_GAS_LIMIT) {
             revert IGeneralErrors.BelowMin();
+        }
 
         _getStorage().nativeTransferGasLimit = _nativeTransferGasLimit;
 
-        emit IChainConfigUtils.NativeTransferGasLimitUpdated(
-            _nativeTransferGasLimit
-        );
+        emit IChainConfigUtils.NativeTransferGasLimitUpdated(_nativeTransferGasLimit);
     }
 
     /**
@@ -45,9 +39,7 @@ library ChainConfigUtils {
     function updateNativeTransferEnabled(bool _nativeTransferEnabled) internal {
         _getStorage().nativeTransferEnabled = _nativeTransferEnabled;
 
-        emit IChainConfigUtils.NativeTransferEnabledUpdated(
-            _nativeTransferEnabled
-        );
+        emit IChainConfigUtils.NativeTransferEnabledUpdated(_nativeTransferEnabled);
     }
 
     /**
@@ -84,11 +76,7 @@ library ChainConfigUtils {
     /**
      * @dev Returns storage pointer for storage struct in diamond contract, at defined slot
      */
-    function _getStorage()
-        internal
-        pure
-        returns (IChainConfig.ChainConfigStorage storage s)
-    {
+    function _getStorage() internal pure returns (IChainConfig.ChainConfigStorage storage s) {
         uint256 storageSlot = _getSlot();
         assembly {
             s.slot := storageSlot

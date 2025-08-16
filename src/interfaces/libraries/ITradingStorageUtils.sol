@@ -53,30 +53,21 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _trade trade to be stored
      * @param _tradeInfo trade info to be stored
      */
-    function storeTrade(
-        Trade memory _trade,
-        TradeInfo memory _tradeInfo
-    ) external returns (Trade memory);
+    function storeTrade(Trade memory _trade, TradeInfo memory _tradeInfo) external returns (Trade memory);
 
     /**
      * @dev Updates an existing trade max closing slippage %
      * @param _tradeId id of the trade
      * @param _maxSlippageP new max slippage % (1e3 precision)
      */
-    function updateTradeMaxClosingSlippageP(
-        ITradingStorage.Id memory _tradeId,
-        uint16 _maxSlippageP
-    ) external;
+    function updateTradeMaxClosingSlippageP(ITradingStorage.Id memory _tradeId, uint16 _maxSlippageP) external;
 
     /**
      * @dev Updates an open trade collateral
      * @param _tradeId id of updated trade
      * @param _collateralAmount new collateral amount value (collateral precision)
      */
-    function updateTradeCollateralAmount(
-        Id memory _tradeId,
-        uint120 _collateralAmount
-    ) external;
+    function updateTradeCollateralAmount(Id memory _tradeId, uint120 _collateralAmount) external;
 
     /**
      * @dev Updates an open trade collateral
@@ -104,13 +95,8 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _sl new stop loss price (1e10)
      * @param _maxSlippageP new max slippage % value (1e3)
      */
-    function updateOpenOrderDetails(
-        Id memory _tradeId,
-        uint64 _openPrice,
-        uint64 _tp,
-        uint64 _sl,
-        uint16 _maxSlippageP
-    ) external;
+    function updateOpenOrderDetails(Id memory _tradeId, uint64 _openPrice, uint64 _tp, uint64 _sl, uint16 _maxSlippageP)
+        external;
 
     /**
      * @dev Updates the take profit of an open trade
@@ -137,9 +123,7 @@ interface ITradingStorageUtils is ITradingStorage {
      * @dev Stores a new pending order
      * @param _pendingOrder the pending order to be stored
      */
-    function storePendingOrder(
-        PendingOrder memory _pendingOrder
-    ) external returns (PendingOrder memory);
+    function storePendingOrder(PendingOrder memory _pendingOrder) external returns (PendingOrder memory);
 
     /**
      * @dev Closes a pending order
@@ -151,9 +135,7 @@ interface ITradingStorageUtils is ITradingStorage {
      * @dev Returns collateral data by index
      * @param _index the index of the supported collateral
      */
-    function getCollateral(
-        uint8 _index
-    ) external view returns (Collateral memory);
+    function getCollateral(uint8 _index) external view returns (Collateral memory);
 
     /**
      * @dev Returns whether can open new trades with a collateral
@@ -187,9 +169,7 @@ interface ITradingStorageUtils is ITradingStorage {
      * @dev Returns the index of a supported collateral
      * @param _collateral the address of the collateral
      */
-    function getCollateralIndex(
-        address _collateral
-    ) external view returns (uint8);
+    function getCollateralIndex(address _collateral) external view returns (uint8);
 
     /**
      * @dev Returns the collateral index of the GNS token. If 0, GNS is not a collateral.
@@ -217,20 +197,14 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _offset start index in the traders array
      * @param _limit end index in the traders array
      */
-    function getTraders(
-        uint32 _offset,
-        uint32 _limit
-    ) external view returns (address[] memory);
+    function getTraders(uint32 _offset, uint32 _limit) external view returns (address[] memory);
 
     /**
      * @dev Returns open trade/limit/stop order
      * @param _trader address of the trader
      * @param _index index of the trade for trader
      */
-    function getTrade(
-        address _trader,
-        uint32 _index
-    ) external view returns (Trade memory);
+    function getTrade(address _trader, uint32 _index) external view returns (Trade memory);
 
     /**
      * @dev Returns all open trades/limit/stop orders for a trader
@@ -244,11 +218,10 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _offset index of first trade to return
      * @param _limit index of last trade to return
      */
-    function getAllTradesForTraders(
-        address[] memory _traders,
-        uint256 _offset,
-        uint256 _limit
-    ) external view returns (Trade[] memory);
+    function getAllTradesForTraders(address[] memory _traders, uint256 _offset, uint256 _limit)
+        external
+        view
+        returns (Trade[] memory);
 
     /**
      * @dev Returns all trade/limit/stop orders using a pagination system.
@@ -256,28 +229,20 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _offset index of first trade to return
      * @param _limit index of last trade to return
      */
-    function getAllTrades(
-        uint256 _offset,
-        uint256 _limit
-    ) external view returns (Trade[] memory);
+    function getAllTrades(uint256 _offset, uint256 _limit) external view returns (Trade[] memory);
 
     /**
      * @dev Returns trade info of an open trade/limit/stop order
      * @param _trader address of the trader
      * @param _index index of the trade for trader
      */
-    function getTradeInfo(
-        address _trader,
-        uint32 _index
-    ) external view returns (TradeInfo memory);
+    function getTradeInfo(address _trader, uint32 _index) external view returns (TradeInfo memory);
 
     /**
      * @dev Returns all trade infos of open trade/limit/stop orders for a trader
      * @param _trader address of the trader
      */
-    function getTradeInfos(
-        address _trader
-    ) external view returns (TradeInfo[] memory);
+    function getTradeInfos(address _trader) external view returns (TradeInfo[] memory);
 
     /**
      * @dev Returns all trade infos of open trade/limit/stop orders using a pagination system
@@ -285,11 +250,10 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _offset index of first tradeInfo to return
      * @param _limit index of last tradeInfo to return
      */
-    function getAllTradeInfosForTraders(
-        address[] memory _traders,
-        uint256 _offset,
-        uint256 _limit
-    ) external view returns (TradeInfo[] memory);
+    function getAllTradeInfosForTraders(address[] memory _traders, uint256 _offset, uint256 _limit)
+        external
+        view
+        returns (TradeInfo[] memory);
 
     /**
      * @dev Returns all trade infos of open trade/limit/stop orders using a pagination system.
@@ -297,26 +261,19 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _offset index of first tradeInfo to return
      * @param _limit index of last tradeInfo to return
      */
-    function getAllTradeInfos(
-        uint256 _offset,
-        uint256 _limit
-    ) external view returns (TradeInfo[] memory);
+    function getAllTradeInfos(uint256 _offset, uint256 _limit) external view returns (TradeInfo[] memory);
 
     /**
      * @dev Returns a pending ordeer
      * @param _orderId id of the pending order
      */
-    function getPendingOrder(
-        Id memory _orderId
-    ) external view returns (PendingOrder memory);
+    function getPendingOrder(Id memory _orderId) external view returns (PendingOrder memory);
 
     /**
      * @dev Returns all pending orders for a trader
      * @param _user address of the trader
      */
-    function getPendingOrders(
-        address _user
-    ) external view returns (PendingOrder[] memory);
+    function getPendingOrders(address _user) external view returns (PendingOrder[] memory);
 
     /**
      * @dev Returns all pending orders using a pagination system
@@ -324,11 +281,10 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _offset index of first pendingOrder to return
      * @param _limit index of last pendingOrder to return
      */
-    function getAllPendingOrdersForTraders(
-        address[] memory _traders,
-        uint256 _offset,
-        uint256 _limit
-    ) external view returns (PendingOrder[] memory);
+    function getAllPendingOrdersForTraders(address[] memory _traders, uint256 _offset, uint256 _limit)
+        external
+        view
+        returns (PendingOrder[] memory);
 
     /**
      * @dev Returns all pending orders using a pagination system
@@ -336,40 +292,34 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _offset index of first pendingOrder to return
      * @param _limit index of last pendingOrder to return
      */
-    function getAllPendingOrders(
-        uint256 _offset,
-        uint256 _limit
-    ) external view returns (PendingOrder[] memory);
+    function getAllPendingOrders(uint256 _offset, uint256 _limit) external view returns (PendingOrder[] memory);
 
     /**
      * @dev Returns the block number of the pending order for a trade (0 = doesn't exist)
      * @param _tradeId id of the trade
      * @param _orderType pending order type to check
      */
-    function getTradePendingOrderBlock(
-        Id memory _tradeId,
-        PendingOrderType _orderType
-    ) external view returns (uint256);
+    function getTradePendingOrderBlock(Id memory _tradeId, PendingOrderType _orderType)
+        external
+        view
+        returns (uint256);
 
     /**
      * @dev Returns the counters of a trader (currentIndex / open count for trades/tradeInfos and pendingOrders mappings)
      * @param _trader address of the trader
      * @param _type the counter type (trade/pending order)
      */
-    function getCounters(
-        address _trader,
-        CounterType _type
-    ) external view returns (Counter memory);
+    function getCounters(address _trader, CounterType _type) external view returns (Counter memory);
 
     /**
      * @dev Returns the counters for a list of traders
      * @param _traders the list of traders
      * @param _type the counter type (trade/pending order)
      */
-    function getCountersForTraders(
-        address[] calldata _traders,
-        CounterType _type
-    ) external view returns (Counter[] memory);
+    function getCountersForTraders(address[] calldata _traders, CounterType _type)
+        external
+        view
+        returns (Counter[] memory);
 
     /**
      * @dev Returns the address of the gToken for a collateral stack
@@ -382,18 +332,19 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _trader address of the trader
      * @param _index index of the trade for trader
      */
-    function getTradeLiquidationParams(
-        address _trader,
-        uint32 _index
-    ) external view returns (IPairsStorage.GroupLiquidationParams memory);
+    function getTradeLiquidationParams(address _trader, uint32 _index)
+        external
+        view
+        returns (IPairsStorage.GroupLiquidationParams memory);
 
     /**
      * @dev Returns all trade liquidation params of open trade/limit/stop orders for a trader
      * @param _trader address of the trader
      */
-    function getTradesLiquidationParams(
-        address _trader
-    ) external view returns (IPairsStorage.GroupLiquidationParams[] memory);
+    function getTradesLiquidationParams(address _trader)
+        external
+        view
+        returns (IPairsStorage.GroupLiquidationParams[] memory);
 
     /**
      * @dev Returns all trade liquidation params of open trade/limit/stop orders using a pagination system
@@ -401,11 +352,10 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _offset index of first liq param to return
      * @param _limit index of last liq param to return
      */
-    function getAllTradesLiquidationParamsForTraders(
-        address[] memory _traders,
-        uint256 _offset,
-        uint256 _limit
-    ) external view returns (IPairsStorage.GroupLiquidationParams[] memory);
+    function getAllTradesLiquidationParamsForTraders(address[] memory _traders, uint256 _offset, uint256 _limit)
+        external
+        view
+        returns (IPairsStorage.GroupLiquidationParams[] memory);
 
     /**
      * @dev Returns all trade liquidation params of open trade/limit/stop orders using a pagination system
@@ -413,18 +363,15 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param _offset index of first liq param to return
      * @param _limit index of last liq param to return
      */
-    function getAllTradesLiquidationParams(
-        uint256 _offset,
-        uint256 _limit
-    ) external view returns (IPairsStorage.GroupLiquidationParams[] memory);
+    function getAllTradesLiquidationParams(uint256 _offset, uint256 _limit)
+        external
+        view
+        returns (IPairsStorage.GroupLiquidationParams[] memory);
 
     /**
      * @dev Returns the current contracts version
      */
-    function getCurrentContractsVersion()
-        external
-        pure
-        returns (ITradingStorage.ContractsVersion);
+    function getCurrentContractsVersion() external pure returns (ITradingStorage.ContractsVersion);
 
     /**
      * @dev Emitted when the trading activated state is updated
@@ -483,11 +430,7 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param index trade index
      * @param maxClosingSlippageP new max closing slippage % value (1e3 precision)
      */
-    event TradeMaxClosingSlippagePUpdated(
-        address indexed user,
-        uint32 indexed index,
-        uint16 maxClosingSlippageP
-    );
+    event TradeMaxClosingSlippagePUpdated(address indexed user, uint32 indexed index, uint16 maxClosingSlippageP);
 
     /**
      * @dev Emitted when an open trade collateral is updated
@@ -495,11 +438,7 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param index trade index
      * @param collateralAmount new collateral value (collateral precision)
      */
-    event TradeCollateralUpdated(
-        address indexed user,
-        uint32 indexed index,
-        uint120 collateralAmount
-    );
+    event TradeCollateralUpdated(address indexed user, uint32 indexed index, uint120 collateralAmount);
 
     /**
      * @dev Emitted when an open trade collateral is updated
@@ -535,12 +474,7 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param maxSlippageP new max slippage % value (1e3)
      */
     event OpenOrderDetailsUpdated(
-        address indexed user,
-        uint32 indexed index,
-        uint64 openPrice,
-        uint64 tp,
-        uint64 sl,
-        uint16 maxSlippageP
+        address indexed user, uint32 indexed index, uint64 openPrice, uint64 tp, uint64 sl, uint16 maxSlippageP
     );
 
     /**
@@ -549,11 +483,7 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param index trade index
      * @param newTp the new take profit (1e10 precision)
      */
-    event TradeTpUpdated(
-        address indexed user,
-        uint32 indexed index,
-        uint64 newTp
-    );
+    event TradeTpUpdated(address indexed user, uint32 indexed index, uint64 newTp);
 
     /**
      * @dev Emitted when the stop loss of an open trade is updated
@@ -561,11 +491,7 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param index trade index
      * @param newSl the new sl (1e10 precision)
      */
-    event TradeSlUpdated(
-        address indexed user,
-        uint32 indexed index,
-        uint64 newSl
-    );
+    event TradeSlUpdated(address indexed user, uint32 indexed index, uint64 newSl);
 
     /**
      * @dev Emitted when an open trade is closed
@@ -573,11 +499,7 @@ interface ITradingStorageUtils is ITradingStorage {
      * @param index trade index
      * @param isPnlPositive true if trade pnl is positive
      */
-    event TradeClosed(
-        address indexed user,
-        uint32 indexed index,
-        bool isPnlPositive
-    );
+    event TradeClosed(address indexed user, uint32 indexed index, bool isPnlPositive);
 
     /**
      * @dev Emitted when a new pending order is stored

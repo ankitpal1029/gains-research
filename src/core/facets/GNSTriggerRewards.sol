@@ -20,27 +20,21 @@ contract GNSTriggerRewards is GNSAddressStore, ITriggerRewardsUtils {
     }
 
     /// @inheritdoc ITriggerRewardsUtils
-    function initializeTriggerRewards(
-        uint16 _timeoutBlocks
-    ) external reinitializer(7) {
+    function initializeTriggerRewards(uint16 _timeoutBlocks) external reinitializer(7) {
         TriggerRewardsUtils.initializeTriggerRewards(_timeoutBlocks);
     }
 
     // Management Setters
 
     /// @inheritdoc ITriggerRewardsUtils
-    function updateTriggerTimeoutBlocks(
-        uint16 _timeoutBlocks
-    ) external onlyRole(Role.GOV) {
+    function updateTriggerTimeoutBlocks(uint16 _timeoutBlocks) external onlyRole(Role.GOV) {
         TriggerRewardsUtils.updateTriggerTimeoutBlocks(_timeoutBlocks);
     }
 
     // Interactions
 
     /// @inheritdoc ITriggerRewardsUtils
-    function distributeTriggerReward(
-        uint256 _rewardGns
-    ) external virtual onlySelf {
+    function distributeTriggerReward(uint256 _rewardGns) external virtual onlySelf {
         TriggerRewardsUtils.distributeTriggerReward(_rewardGns);
     }
 
@@ -57,17 +51,11 @@ contract GNSTriggerRewards is GNSAddressStore, ITriggerRewardsUtils {
 
     /// @inheritdoc ITriggerRewardsUtils
     function hasActiveOrder(uint256 _orderBlock) external view returns (bool) {
-        return
-            TriggerRewardsUtils.hasActiveOrder(
-                _orderBlock,
-                ChainUtils.getBlockNumber()
-            );
+        return TriggerRewardsUtils.hasActiveOrder(_orderBlock, ChainUtils.getBlockNumber());
     }
 
     /// @inheritdoc ITriggerRewardsUtils
-    function getTriggerPendingRewardsGns(
-        address _oracle
-    ) external view returns (uint256) {
+    function getTriggerPendingRewardsGns(address _oracle) external view returns (uint256) {
         return TriggerRewardsUtils.getTriggerPendingRewardsGns(_oracle);
     }
 }

@@ -11,11 +11,7 @@ import "../../libraries/PriceAggregatorUtils.sol";
 /**
  * @dev Facet #10: Price aggregator (does the requests to the Chainlink DON, takes the median, and executes callbacks)
  */
-contract GNSPriceAggregator is
-    GNSAddressStore,
-    GNSReentrancyGuard,
-    IPriceAggregatorUtils
-{
+contract GNSPriceAggregator is GNSAddressStore, GNSReentrancyGuard, IPriceAggregatorUtils {
     // Initialization
 
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -49,65 +45,48 @@ contract GNSPriceAggregator is
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function initializeLimitJobCount(
-        uint8 _limitJobCount
-    ) external reinitializer(19) {
+    function initializeLimitJobCount(uint8 _limitJobCount) external reinitializer(19) {
         PriceAggregatorUtils.initializeLimitJobCount(_limitJobCount);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function initializeMaxDeviationsP(
-        uint24 _maxMarketDeviationP,
-        uint24 _maxLookbackDeviationP
-    ) external reinitializer(22) {
-        PriceAggregatorUtils.initializeMaxDeviationsP(
-            _maxMarketDeviationP,
-            _maxLookbackDeviationP
-        );
+    function initializeMaxDeviationsP(uint24 _maxMarketDeviationP, uint24 _maxLookbackDeviationP)
+        external
+        reinitializer(22)
+    {
+        PriceAggregatorUtils.initializeMaxDeviationsP(_maxMarketDeviationP, _maxLookbackDeviationP);
     }
 
     // Management Setters
 
     /// @inheritdoc IPriceAggregatorUtils
-    function updateLinkUsdPriceFeed(
-        IChainlinkFeed _value
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function updateLinkUsdPriceFeed(IChainlinkFeed _value) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.updateLinkUsdPriceFeed(_value);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function updateCollateralUsdPriceFeed(
-        uint8 _collateralIndex,
-        IChainlinkFeed _value
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
-        PriceAggregatorUtils.updateCollateralUsdPriceFeed(
-            _collateralIndex,
-            _value
-        );
+    function updateCollateralUsdPriceFeed(uint8 _collateralIndex, IChainlinkFeed _value)
+        external
+        onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY)
+    {
+        PriceAggregatorUtils.updateCollateralUsdPriceFeed(_collateralIndex, _value);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function updateCollateralGnsLiquidityPool(
-        uint8 _collateralIndex,
-        LiquidityPoolInput calldata _liquidityPoolInput
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
-        PriceAggregatorUtils.updateCollateralGnsLiquidityPool(
-            _collateralIndex,
-            _liquidityPoolInput
-        );
+    function updateCollateralGnsLiquidityPool(uint8 _collateralIndex, LiquidityPoolInput calldata _liquidityPoolInput)
+        external
+        onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY)
+    {
+        PriceAggregatorUtils.updateCollateralGnsLiquidityPool(_collateralIndex, _liquidityPoolInput);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function updateTwapInterval(
-        uint24 _twapInterval
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function updateTwapInterval(uint24 _twapInterval) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.updateTwapInterval(_twapInterval);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function updateMinAnswers(
-        uint8 _value
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function updateMinAnswers(uint8 _value) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.updateMinAnswers(_value);
     }
 
@@ -117,52 +96,37 @@ contract GNSPriceAggregator is
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function replaceOracle(
-        uint256 _index,
-        address _a
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function replaceOracle(uint256 _index, address _a) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.replaceOracle(_index, _a);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function removeOracle(
-        uint256 _index
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function removeOracle(uint256 _index) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.removeOracle(_index);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function setMarketJobId(
-        bytes32 _jobId
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function setMarketJobId(bytes32 _jobId) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.setMarketJobId(_jobId);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function setLimitJobId(
-        bytes32 _jobId
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function setLimitJobId(bytes32 _jobId) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.setLimitJobId(_jobId);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function setLimitJobCount(
-        uint8 _limitJobCount
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function setLimitJobCount(uint8 _limitJobCount) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.setLimitJobCount(_limitJobCount);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function setMaxMarketDeviationP(
-        uint24 _maxMarketDeviationP
-    ) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
+    function setMaxMarketDeviationP(uint24 _maxMarketDeviationP) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.setMaxMarketDeviationP(_maxMarketDeviationP);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function setMaxLookbackDeviationP(
-        uint24 _maxLookbackDeviationP
-    ) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
+    function setMaxLookbackDeviationP(uint24 _maxLookbackDeviationP) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
         PriceAggregatorUtils.setMaxLookbackDeviationP(_maxLookbackDeviationP);
     }
 
@@ -176,21 +140,13 @@ contract GNSPriceAggregator is
         uint256 _positionSizeCollateral,
         uint256 _fromBlock
     ) external virtual onlySelf returns (ITradingStorage.Id memory) {
-        return
-            PriceAggregatorUtils.getPrice(
-                _collateralIndex,
-                _pairIndex,
-                _pendingOrder,
-                _positionSizeCollateral,
-                _fromBlock
-            );
+        return PriceAggregatorUtils.getPrice(
+            _collateralIndex, _pairIndex, _pendingOrder, _positionSizeCollateral, _fromBlock
+        );
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function fulfill(
-        bytes32 _requestId,
-        uint256 _priceData
-    ) external nonReentrant {
+    function fulfill(bytes32 _requestId, uint256 _priceData) external nonReentrant {
         PriceAggregatorUtils.fulfill(_requestId, _priceData); // access control handled by library (validates chainlink callback)
     }
 
@@ -202,83 +158,50 @@ contract GNSPriceAggregator is
     // Getters
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getLinkFee(
-        uint8 _collateralIndex,
-        address _trader,
-        uint16 _pairIndex,
-        uint256 _positionSizeCollateral
-    ) external view returns (uint256) {
-        return
-            PriceAggregatorUtils.getLinkFee(
-                _collateralIndex,
-                _trader,
-                _pairIndex,
-                _positionSizeCollateral
-            );
+    function getLinkFee(uint8 _collateralIndex, address _trader, uint16 _pairIndex, uint256 _positionSizeCollateral)
+        external
+        view
+        returns (uint256)
+    {
+        return PriceAggregatorUtils.getLinkFee(_collateralIndex, _trader, _pairIndex, _positionSizeCollateral);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getCollateralPriceUsd(
-        uint8 _collateralIndex
-    ) external view returns (uint256) {
+    function getCollateralPriceUsd(uint8 _collateralIndex) external view returns (uint256) {
         return PriceAggregatorUtils.getCollateralPriceUsd(_collateralIndex);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getUsdNormalizedValue(
-        uint8 _collateralIndex,
-        uint256 _collateralValue
-    ) external view returns (uint256) {
-        return
-            PriceAggregatorUtils.getUsdNormalizedValue(
-                _collateralIndex,
-                _collateralValue
-            );
+    function getUsdNormalizedValue(uint8 _collateralIndex, uint256 _collateralValue) external view returns (uint256) {
+        return PriceAggregatorUtils.getUsdNormalizedValue(_collateralIndex, _collateralValue);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getCollateralFromUsdNormalizedValue(
-        uint8 _collateralIndex,
-        uint256 _normalizedValue
-    ) external view returns (uint256) {
-        return
-            PriceAggregatorUtils.getCollateralFromUsdNormalizedValue(
-                _collateralIndex,
-                _normalizedValue
-            );
+    function getCollateralFromUsdNormalizedValue(uint8 _collateralIndex, uint256 _normalizedValue)
+        external
+        view
+        returns (uint256)
+    {
+        return PriceAggregatorUtils.getCollateralFromUsdNormalizedValue(_collateralIndex, _normalizedValue);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getGnsPriceUsd(
-        uint8 _collateralIndex
-    ) external view virtual returns (uint256) {
+    function getGnsPriceUsd(uint8 _collateralIndex) external view virtual returns (uint256) {
         return PriceAggregatorUtils.getGnsPriceUsd(_collateralIndex);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getGnsPriceUsd(
-        uint8 _collateralIndex,
-        uint256 _gnsPriceCollateral
-    ) external view returns (uint256) {
-        return
-            PriceAggregatorUtils.getGnsPriceUsd(
-                _collateralIndex,
-                _gnsPriceCollateral
-            );
+    function getGnsPriceUsd(uint8 _collateralIndex, uint256 _gnsPriceCollateral) external view returns (uint256) {
+        return PriceAggregatorUtils.getGnsPriceUsd(_collateralIndex, _gnsPriceCollateral);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getGnsPriceCollateralIndex(
-        uint8 _collateralIndex
-    ) external view virtual returns (uint256) {
-        return
-            PriceAggregatorUtils.getGnsPriceCollateralIndex(_collateralIndex);
+    function getGnsPriceCollateralIndex(uint8 _collateralIndex) external view virtual returns (uint256) {
+        return PriceAggregatorUtils.getGnsPriceCollateralIndex(_collateralIndex);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getGnsPriceCollateralAddress(
-        address _collateral
-    ) external view virtual returns (uint256) {
+    function getGnsPriceCollateralAddress(address _collateral) external view virtual returns (uint256) {
         return PriceAggregatorUtils.getGnsPriceCollateralAddress(_collateral);
     }
 
@@ -318,33 +241,26 @@ contract GNSPriceAggregator is
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getCollateralGnsLiquidityPool(
-        uint8 _collateralIndex
-    ) external view returns (LiquidityPoolInfo memory) {
-        return
-            PriceAggregatorUtils.getCollateralGnsLiquidityPool(
-                _collateralIndex
-            );
+    function getCollateralGnsLiquidityPool(uint8 _collateralIndex) external view returns (LiquidityPoolInfo memory) {
+        return PriceAggregatorUtils.getCollateralGnsLiquidityPool(_collateralIndex);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getCollateralUsdPriceFeed(
-        uint8 _collateralIndex
-    ) external view returns (IChainlinkFeed) {
+    function getCollateralUsdPriceFeed(uint8 _collateralIndex) external view returns (IChainlinkFeed) {
         return PriceAggregatorUtils.getCollateralUsdPriceFeed(_collateralIndex);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getPriceAggregatorOrder(
-        bytes32 _requestId
-    ) external view returns (Order memory) {
+    function getPriceAggregatorOrder(bytes32 _requestId) external view returns (Order memory) {
         return PriceAggregatorUtils.getPriceAggregatorOrder(_requestId);
     }
 
     /// @inheritdoc IPriceAggregatorUtils
-    function getPriceAggregatorOrderAnswers(
-        ITradingStorage.Id calldata _orderId
-    ) external view returns (OrderAnswer[] memory) {
+    function getPriceAggregatorOrderAnswers(ITradingStorage.Id calldata _orderId)
+        external
+        view
+        returns (OrderAnswer[] memory)
+    {
         return PriceAggregatorUtils.getPriceAggregatorOrderAnswers(_orderId);
     }
 

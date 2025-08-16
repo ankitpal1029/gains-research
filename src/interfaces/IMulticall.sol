@@ -7,7 +7,5 @@ interface IMulticall {
      * @param data The data for the calls.
      * @return results The results of the calls.
      */
-    function multicall(
-        bytes[] calldata data
-    ) external returns (bytes[] memory results);
+    function multicall(bytes[] calldata data) external returns (bytes[] memory results);
 }

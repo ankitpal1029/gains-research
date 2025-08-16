@@ -35,14 +35,8 @@ abstract contract GNSAddressStore is Initializable, IGNSAddressStore {
     }
 
     /// @inheritdoc IGNSAddressStore
-    function hasRoles(
-        address _account,
-        Role _roleA,
-        Role _roleB
-    ) public view returns (bool) {
-        return
-            addressStore.accessControl[_account][_roleA] ||
-            addressStore.accessControl[_account][_roleB];
+    function hasRoles(address _account, Role _roleA, Role _roleB) public view returns (bool) {
+        return addressStore.accessControl[_account][_roleA] || addressStore.accessControl[_account][_roleB];
     }
 
     /**
@@ -57,15 +51,11 @@ abstract contract GNSAddressStore is Initializable, IGNSAddressStore {
     }
 
     /// @inheritdoc IGNSAddressStore
-    function setRoles(
-        address[] calldata _accounts,
-        Role[] calldata _roles,
-        bool[] calldata _values
-    ) external onlyRole(Role.GOV_TIMELOCK) {
-        if (
-            _accounts.length != _roles.length ||
-            _accounts.length != _values.length
-        ) {
+    function setRoles(address[] calldata _accounts, Role[] calldata _roles, bool[] calldata _values)
+        external
+        onlyRole(Role.GOV_TIMELOCK)
+    {
+        if (_accounts.length != _roles.length || _accounts.length != _values.length) {
             revert IGeneralErrors.InvalidInputLength();
         }
 

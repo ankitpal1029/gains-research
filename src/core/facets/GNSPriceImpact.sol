@@ -20,20 +20,13 @@ contract GNSPriceImpact is GNSAddressStore, IPriceImpactUtils {
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function initializePriceImpact(
-        uint48 _windowsDuration,
-        uint48 _windowsCount
-    ) external reinitializer(5) {
+    function initializePriceImpact(uint48 _windowsDuration, uint48 _windowsCount) external reinitializer(5) {
         PriceImpactUtils.initializePriceImpact(_windowsDuration, _windowsCount);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function initializeNegPnlCumulVolMultiplier(
-        uint40 _negPnlCumulVolMultiplier
-    ) external reinitializer(17) {
-        PriceImpactUtils.initializeNegPnlCumulVolMultiplier(
-            _negPnlCumulVolMultiplier
-        );
+    function initializeNegPnlCumulVolMultiplier(uint40 _negPnlCumulVolMultiplier) external reinitializer(17) {
+        PriceImpactUtils.initializeNegPnlCumulVolMultiplier(_negPnlCumulVolMultiplier);
     }
 
     /// @inheritdoc IPriceImpactUtils
@@ -44,48 +37,39 @@ contract GNSPriceImpact is GNSAddressStore, IPriceImpactUtils {
         uint40[] calldata _cumulativeFactors
     ) external reinitializer(13) {
         PriceImpactUtils.initializePairFactors(
-            _pairIndices,
-            _protectionCloseFactors,
-            _protectionCloseFactorBlocks,
-            _cumulativeFactors
+            _pairIndices, _protectionCloseFactors, _protectionCloseFactorBlocks, _cumulativeFactors
         );
     }
 
     // Management Setters
 
     /// @inheritdoc IPriceImpactUtils
-    function setPriceImpactWindowsCount(
-        uint48 _newWindowsCount
-    ) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
+    function setPriceImpactWindowsCount(uint48 _newWindowsCount) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
         PriceImpactUtils.setPriceImpactWindowsCount(_newWindowsCount);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function setPriceImpactWindowsDuration(
-        uint48 _newWindowsDuration
-    ) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
-        PriceImpactUtils.setPriceImpactWindowsDuration(
-            _newWindowsDuration,
-            PairsStorageUtils.pairsCount()
-        );
+    function setPriceImpactWindowsDuration(uint48 _newWindowsDuration)
+        external
+        onlyRoles(Role.GOV, Role.GOV_EMERGENCY)
+    {
+        PriceImpactUtils.setPriceImpactWindowsDuration(_newWindowsDuration, PairsStorageUtils.pairsCount());
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function setNegPnlCumulVolMultiplier(
-        uint40 _negPnlCumulVolMultiplier
-    ) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
+    function setNegPnlCumulVolMultiplier(uint40 _negPnlCumulVolMultiplier)
+        external
+        onlyRoles(Role.GOV, Role.GOV_EMERGENCY)
+    {
         PriceImpactUtils.setNegPnlCumulVolMultiplier(_negPnlCumulVolMultiplier);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function setProtectionCloseFactorWhitelist(
-        address[] calldata _traders,
-        bool[] calldata _whitelisted
-    ) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
-        PriceImpactUtils.setProtectionCloseFactorWhitelist(
-            _traders,
-            _whitelisted
-        );
+    function setProtectionCloseFactorWhitelist(address[] calldata _traders, bool[] calldata _whitelisted)
+        external
+        onlyRoles(Role.GOV, Role.GOV_EMERGENCY)
+    {
+        PriceImpactUtils.setProtectionCloseFactorWhitelist(_traders, _whitelisted);
     }
 
     /// @inheritdoc IPriceImpactUtils
@@ -95,12 +79,7 @@ contract GNSPriceImpact is GNSAddressStore, IPriceImpactUtils {
         uint16[] calldata _cumulVolPriceImpactMultipliers,
         uint16[] calldata _fixedSpreadPs
     ) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
-        PriceImpactUtils.setUserPriceImpact(
-            _traders,
-            _pairIndices,
-            _cumulVolPriceImpactMultipliers,
-            _fixedSpreadPs
-        );
+        PriceImpactUtils.setUserPriceImpact(_traders, _pairIndices, _cumulVolPriceImpactMultipliers, _fixedSpreadPs);
     }
 
     /// @inheritdoc IPriceImpactUtils
@@ -109,22 +88,15 @@ contract GNSPriceImpact is GNSAddressStore, IPriceImpactUtils {
         uint128[] calldata _depthsAboveUsd,
         uint128[] calldata _depthsBelowUsd
     ) external onlyRole(Role.MANAGER) {
-        PriceImpactUtils.setPairDepths(
-            _indices,
-            _depthsAboveUsd,
-            _depthsBelowUsd
-        );
+        PriceImpactUtils.setPairDepths(_indices, _depthsAboveUsd, _depthsBelowUsd);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function setProtectionCloseFactors(
-        uint16[] calldata _pairIndices,
-        uint40[] calldata _protectionCloseFactors
-    ) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
-        PriceImpactUtils.setProtectionCloseFactors(
-            _pairIndices,
-            _protectionCloseFactors
-        );
+    function setProtectionCloseFactors(uint16[] calldata _pairIndices, uint40[] calldata _protectionCloseFactors)
+        external
+        onlyRoles(Role.GOV, Role.GOV_EMERGENCY)
+    {
+        PriceImpactUtils.setProtectionCloseFactors(_pairIndices, _protectionCloseFactors);
     }
 
     /// @inheritdoc IPriceImpactUtils
@@ -132,25 +104,22 @@ contract GNSPriceImpact is GNSAddressStore, IPriceImpactUtils {
         uint16[] calldata _pairIndices,
         uint32[] calldata _protectionCloseFactorBlocks
     ) external onlyRoles(Role.GOV, Role.GOV_EMERGENCY) {
-        PriceImpactUtils.setProtectionCloseFactorBlocks(
-            _pairIndices,
-            _protectionCloseFactorBlocks
-        );
+        PriceImpactUtils.setProtectionCloseFactorBlocks(_pairIndices, _protectionCloseFactorBlocks);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function setCumulativeFactors(
-        uint16[] calldata _pairIndices,
-        uint40[] calldata _cumulativeFactors
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function setCumulativeFactors(uint16[] calldata _pairIndices, uint40[] calldata _cumulativeFactors)
+        external
+        onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY)
+    {
         PriceImpactUtils.setCumulativeFactors(_pairIndices, _cumulativeFactors);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function setExemptOnOpen(
-        uint16[] calldata _pairIndices,
-        bool[] calldata _exemptOnOpen
-    ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
+    function setExemptOnOpen(uint16[] calldata _pairIndices, bool[] calldata _exemptOnOpen)
+        external
+        onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY)
+    {
         PriceImpactUtils.setExemptOnOpen(_pairIndices, _exemptOnOpen);
     }
 
@@ -159,10 +128,7 @@ contract GNSPriceImpact is GNSAddressStore, IPriceImpactUtils {
         uint16[] calldata _pairIndices,
         bool[] calldata _exemptAfterProtectionCloseFactor
     ) external onlyRoles(Role.GOV_TIMELOCK, Role.GOV_EMERGENCY) {
-        PriceImpactUtils.setExemptAfterProtectionCloseFactor(
-            _pairIndices,
-            _exemptAfterProtectionCloseFactor
-        );
+        PriceImpactUtils.setExemptAfterProtectionCloseFactor(_pairIndices, _exemptAfterProtectionCloseFactor);
     }
 
     // Interactions
@@ -175,22 +141,13 @@ contract GNSPriceImpact is GNSAddressStore, IPriceImpactUtils {
         bool _open,
         bool _isPnlPositive
     ) external virtual onlySelf {
-        PriceImpactUtils.addPriceImpactOpenInterest(
-            _trader,
-            _index,
-            _oiDeltaCollateral,
-            _open,
-            _isPnlPositive
-        );
+        PriceImpactUtils.addPriceImpactOpenInterest(_trader, _index, _oiDeltaCollateral, _open, _isPnlPositive);
     }
 
     // Getters
 
     /// @inheritdoc IPriceImpactUtils
-    function getPriceImpactOi(
-        uint256 _pairIndex,
-        bool _long
-    ) external view returns (uint256 activeOi) {
+    function getPriceImpactOi(uint256 _pairIndex, bool _long) external view returns (uint256 activeOi) {
         return PriceImpactUtils.getPriceImpactOi(_pairIndex, _long);
     }
 
@@ -220,60 +177,40 @@ contract GNSPriceImpact is GNSAddressStore, IPriceImpactUtils {
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function getPairDepth(
-        uint256 _pairIndex
-    ) external view returns (PairDepth memory) {
+    function getPairDepth(uint256 _pairIndex) external view returns (PairDepth memory) {
         return PriceImpactUtils.getPairDepth(_pairIndex);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function getOiWindowsSettings()
-        external
-        view
-        returns (OiWindowsSettings memory)
-    {
+    function getOiWindowsSettings() external view returns (OiWindowsSettings memory) {
         return PriceImpactUtils.getOiWindowsSettings();
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function getOiWindow(
-        uint48 _windowsDuration,
-        uint256 _pairIndex,
-        uint256 _windowId
-    ) external view returns (PairOi memory) {
-        return
-            PriceImpactUtils.getOiWindow(
-                _windowsDuration,
-                _pairIndex,
-                _windowId
-            );
+    function getOiWindow(uint48 _windowsDuration, uint256 _pairIndex, uint256 _windowId)
+        external
+        view
+        returns (PairOi memory)
+    {
+        return PriceImpactUtils.getOiWindow(_windowsDuration, _pairIndex, _windowId);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function getOiWindows(
-        uint48 _windowsDuration,
-        uint256 _pairIndex,
-        uint256[] calldata _windowIds
-    ) external view returns (PairOi[] memory) {
-        return
-            PriceImpactUtils.getOiWindows(
-                _windowsDuration,
-                _pairIndex,
-                _windowIds
-            );
+    function getOiWindows(uint48 _windowsDuration, uint256 _pairIndex, uint256[] calldata _windowIds)
+        external
+        view
+        returns (PairOi[] memory)
+    {
+        return PriceImpactUtils.getOiWindows(_windowsDuration, _pairIndex, _windowIds);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function getPairDepths(
-        uint256[] calldata _indices
-    ) external view returns (PairDepth[] memory) {
+    function getPairDepths(uint256[] calldata _indices) external view returns (PairDepth[] memory) {
         return PriceImpactUtils.getPairDepths(_indices);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function getPairFactors(
-        uint256[] calldata _indices
-    ) external view returns (IPriceImpact.PairFactors[] memory) {
+    function getPairFactors(uint256[] calldata _indices) external view returns (IPriceImpact.PairFactors[] memory) {
         return PriceImpactUtils.getPairFactors(_indices);
     }
 
@@ -283,17 +220,16 @@ contract GNSPriceImpact is GNSAddressStore, IPriceImpactUtils {
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function getProtectionCloseFactorWhitelist(
-        address _trader
-    ) external view returns (bool) {
+    function getProtectionCloseFactorWhitelist(address _trader) external view returns (bool) {
         return PriceImpactUtils.getProtectionCloseFactorWhitelist(_trader);
     }
 
     /// @inheritdoc IPriceImpactUtils
-    function getUserPriceImpact(
-        address _trader,
-        uint256 _pairIndex
-    ) external view returns (IPriceImpact.UserPriceImpact memory) {
+    function getUserPriceImpact(address _trader, uint256 _pairIndex)
+        external
+        view
+        returns (IPriceImpact.UserPriceImpact memory)
+    {
         return PriceImpactUtils.getUserPriceImpact(_trader, _pairIndex);
     }
 }

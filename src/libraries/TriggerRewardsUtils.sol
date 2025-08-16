@@ -14,7 +14,6 @@ import "./ChainUtils.sol";
 /**
  * @dev GNSTriggerRewards facet internal library
  */
-
 library TriggerRewardsUtils {
     using SafeERC20 for IERC20;
 
@@ -32,17 +31,18 @@ library TriggerRewardsUtils {
      * @dev Check ITriggerRewardsUtils interface for documentation
      */
     function updateTriggerTimeoutBlocks(uint16 _timeoutBlocks) internal {
-        if (_timeoutBlocks == 0)
+        if (_timeoutBlocks == 0) {
             revert ITriggerRewardsUtils.TimeoutBlocksZero();
+        }
 
-        uint256 timeoutSeconds = ChainUtils.convertBlocksToSeconds(
-            uint256(_timeoutBlocks)
-        );
+        uint256 timeoutSeconds = ChainUtils.convertBlocksToSeconds(uint256(_timeoutBlocks));
 
-        if (timeoutSeconds < MIN_TRIGGER_TIMEOUT_SECONDS)
+        if (timeoutSeconds < MIN_TRIGGER_TIMEOUT_SECONDS) {
             revert IGeneralErrors.BelowMin();
-        if (timeoutSeconds > MAX_TRIGGER_TIMEOUT_SECONDS)
+        }
+        if (timeoutSeconds > MAX_TRIGGER_TIMEOUT_SECONDS) {
             revert IGeneralErrors.AboveMax();
+        }
 
         _getStorage().triggerTimeoutBlocks = _timeoutBlocks;
 
@@ -62,15 +62,9 @@ library TriggerRewardsUtils {
             s.pendingRewardsGns[oracles[i]] += rewardPerOracleGns;
         }
 
-        IERC20(AddressStoreUtils.getAddresses().gns).mint(
-            address(this),
-            _rewardGns
-        );
+        IERC20(AddressStoreUtils.getAddresses().gns).mint(address(this), _rewardGns);
 
-        emit ITriggerRewardsUtils.TriggerRewarded(
-            rewardPerOracleGns,
-            oracles.length
-        );
+        emit ITriggerRewardsUtils.TriggerRewarded(rewardPerOracleGns, oracles.length);
     }
 
     /**
@@ -80,25 +74,19 @@ library TriggerRewardsUtils {
         ITriggerRewards.TriggerRewardsStorage storage s = _getStorage();
 
         IChainlinkOracle oracle = IChainlinkOracle(_oracle);
-        if (
-            oracle.owner() != msg.sender &&
-            !oracle.getAuthorizationStatus(msg.sender)
-        ) revert IGeneralErrors.NotAuthorized();
+        if (oracle.owner() != msg.sender && !oracle.getAuthorizationStatus(msg.sender)) {
+            revert IGeneralErrors.NotAuthorized();
+        }
 
         uint256 pendingRewardsGns = s.pendingRewardsGns[_oracle];
-        if (pendingRewardsGns == 0)
+        if (pendingRewardsGns == 0) {
             revert ITriggerRewardsUtils.NoPendingTriggerRewards();
+        }
 
         s.pendingRewardsGns[_oracle] = 0;
-        IERC20(AddressStoreUtils.getAddresses().gns).safeTransfer(
-            msg.sender,
-            pendingRewardsGns
-        );
+        IERC20(AddressStoreUtils.getAddresses().gns).safeTransfer(msg.sender, pendingRewardsGns);
 
-        emit ITriggerRewardsUtils.TriggerRewardsClaimed(
-            _oracle,
-            pendingRewardsGns
-        );
+        emit ITriggerRewardsUtils.TriggerRewardsClaimed(_oracle, pendingRewardsGns);
     }
 
     /**
@@ -111,21 +99,14 @@ library TriggerRewardsUtils {
     /**
      * @dev Check ITriggerRewardsUtils interface for documentation
      */
-    function hasActiveOrder(
-        uint256 _orderBlock,
-        uint256 _currentBlock
-    ) internal view returns (bool) {
-        return
-            _currentBlock - _orderBlock <
-            uint256(_getStorage().triggerTimeoutBlocks);
+    function hasActiveOrder(uint256 _orderBlock, uint256 _currentBlock) internal view returns (bool) {
+        return _currentBlock - _orderBlock < uint256(_getStorage().triggerTimeoutBlocks);
     }
 
     /**
      * @dev Check ITriggerRewardsUtils interface for documentation
      */
-    function getTriggerPendingRewardsGns(
-        address _oracle
-    ) internal view returns (uint256) {
+    function getTriggerPendingRewardsGns(address _oracle) internal view returns (uint256) {
         return _getStorage().pendingRewardsGns[_oracle];
     }
 
@@ -139,11 +120,7 @@ library TriggerRewardsUtils {
     /**
      * @dev Returns storage pointer for storage struct in diamond contract, at defined slot
      */
-    function _getStorage()
-        internal
-        pure
-        returns (ITriggerRewards.TriggerRewardsStorage storage s)
-    {
+    function _getStorage() internal pure returns (ITriggerRewards.TriggerRewardsStorage storage s) {
         uint256 storageSlot = _getSlot();
         assembly {
             s.slot := storageSlot
@@ -153,11 +130,7 @@ library TriggerRewardsUtils {
     /**
      * @dev Returns current address as multi-collateral diamond interface to call other facets functions.
      */
-    function _getMultiCollatDiamond()
-        internal
-        view
-        returns (IGNSMultiCollatDiamond)
-    {
+    function _getMultiCollatDiamond() internal view returns (IGNSMultiCollatDiamond) {
         return IGNSMultiCollatDiamond(address(this));
     }
 }

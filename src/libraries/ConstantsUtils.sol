@@ -17,11 +17,7 @@ library ConstantsUtils {
     uint16 internal constant DEFAULT_MAX_CLOSING_SLIPPAGE_P = 1 * 1e3; // 1%
     uint24 internal constant MAX_REFERRAL_FEE_P = 50e3;
 
-    function getMarketOrderTypes()
-        internal
-        pure
-        returns (ITradingStorage.PendingOrderType[5] memory)
-    {
+    function getMarketOrderTypes() internal pure returns (ITradingStorage.PendingOrderType[5] memory) {
         return [
             ITradingStorage.PendingOrderType.MARKET_OPEN,
             ITradingStorage.PendingOrderType.MARKET_CLOSE,
@@ -35,13 +31,14 @@ library ConstantsUtils {
      * @dev Returns pending order type (market open/limit open/stop open) for a trade type (trade/limit/stop)
      * @param _tradeType the trade type
      */
-    function getPendingOpenOrderType(
-        ITradingStorage.TradeType _tradeType
-    ) internal pure returns (ITradingStorage.PendingOrderType) {
-        return
-            _tradeType == ITradingStorage.TradeType.TRADE
-                ? ITradingStorage.PendingOrderType.MARKET_OPEN
-                : _tradeType == ITradingStorage.TradeType.LIMIT
+    function getPendingOpenOrderType(ITradingStorage.TradeType _tradeType)
+        internal
+        pure
+        returns (ITradingStorage.PendingOrderType)
+    {
+        return _tradeType == ITradingStorage.TradeType.TRADE
+            ? ITradingStorage.PendingOrderType.MARKET_OPEN
+            : _tradeType == ITradingStorage.TradeType.LIMIT
                 ? ITradingStorage.PendingOrderType.LIMIT_OPEN
                 : ITradingStorage.PendingOrderType.STOP_OPEN;
     }
@@ -50,11 +47,8 @@ library ConstantsUtils {
      * @dev Returns true if order type is market
      * @param _orderType order type
      */
-    function isOrderTypeMarket(
-        ITradingStorage.PendingOrderType _orderType
-    ) internal pure returns (bool) {
-        ITradingStorage.PendingOrderType[5]
-            memory marketOrderTypes = ConstantsUtils.getMarketOrderTypes();
+    function isOrderTypeMarket(ITradingStorage.PendingOrderType _orderType) internal pure returns (bool) {
+        ITradingStorage.PendingOrderType[5] memory marketOrderTypes = ConstantsUtils.getMarketOrderTypes();
         for (uint256 i; i < marketOrderTypes.length; ++i) {
             if (_orderType == marketOrderTypes[i]) return true;
         }

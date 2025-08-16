@@ -32,6 +32,4 @@ interface ITypes is
     IPriceAggregator,
     IOtc,
     IChainConfig
-{
-
-}
+{}

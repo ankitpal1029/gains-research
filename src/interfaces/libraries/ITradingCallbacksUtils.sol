@@ -60,17 +60,13 @@ interface ITradingCallbacksUtils is
      * @dev Executes a pending open trigger order (for limit/stop orders)
      * @param _a the price aggregator answer (order id, price, etc.)
      */
-    function executeTriggerOpenOrderCallback(
-        AggregatorAnswer memory _a
-    ) external;
+    function executeTriggerOpenOrderCallback(AggregatorAnswer memory _a) external;
 
     /**
      * @dev Executes a pending close trigger order (for tp/sl/liq orders)
      * @param _a the price aggregator answer (order id, price, etc.)
      */
-    function executeTriggerCloseOrderCallback(
-        AggregatorAnswer memory _a
-    ) external;
+    function executeTriggerCloseOrderCallback(AggregatorAnswer memory _a) external;
 
     /**
      * @dev Executes a pending update leverage order
@@ -82,17 +78,13 @@ interface ITradingCallbacksUtils is
      * @dev Executes a pending increase position size market order
      * @param _a the price aggregator answer (order id, price, etc.)
      */
-    function increasePositionSizeMarketCallback(
-        AggregatorAnswer memory _a
-    ) external;
+    function increasePositionSizeMarketCallback(AggregatorAnswer memory _a) external;
 
     /**
      * @dev Executes a pending decrease position size market order
      * @param _a the price aggregator answer (order id, price, etc.)
      */
-    function decreasePositionSizeMarketCallback(
-        AggregatorAnswer memory _a
-    ) external;
+    function decreasePositionSizeMarketCallback(AggregatorAnswer memory _a) external;
 
     /**
      * @dev Returns the current vaultClosingFeeP value (%)
@@ -102,9 +94,7 @@ interface ITradingCallbacksUtils is
     /**
      * @dev Returns the current pending gov fees for a collateral index (collateral precision)
      */
-    function getPendingGovFeesCollateral(
-        uint8 _collateralIndex
-    ) external view returns (uint256);
+    function getPendingGovFeesCollateral(uint8 _collateralIndex) external view returns (uint256);
 
     /**
      * @dev Makes open trigger (STOP/LIMIT) checks like slippage, price impact, missed targets and returns cancellation reason if any
@@ -163,10 +153,7 @@ interface ITradingCallbacksUtils is
      * @param collateralIndex the collateral index
      * @param amountCollateral the amount of fees claimed (collateral precision)
      */
-    event PendingGovFeesClaimed(
-        uint8 collateralIndex,
-        uint256 amountCollateral
-    );
+    event PendingGovFeesClaimed(uint8 collateralIndex, uint256 amountCollateral);
 
     /**
      * @dev Emitted when a market order is executed (open/close)
@@ -183,7 +170,8 @@ interface ITradingCallbacksUtils is
      * @param amountSentToTrader the final amount of collateral sent to the trader
      * @param collateralPriceUsd the price of the collateral in USD (1e8 precision)
      */
-    event MarketExecuted(
+    event MarketExecuted( // before fees
+        // 1e8
         ITradingStorage.Id orderId,
         address indexed user,
         uint32 indexed index,
@@ -193,9 +181,9 @@ interface ITradingCallbacksUtils is
         uint256 marketPrice,
         uint256 liqPrice,
         uint256 priceImpactP,
-        int256 percentProfit, // before fees
+        int256 percentProfit,
         uint256 amountSentToTrader,
-        uint256 collateralPriceUsd // 1e8
+        uint256 collateralPriceUsd
     );
 
     /**
@@ -216,7 +204,7 @@ interface ITradingCallbacksUtils is
      * @param collateralPriceUsd the price of the collateral in USD (1e8 precision)
      * @param exactExecution true if guaranteed execution was used
      */
-    event LimitExecuted(
+    event LimitExecuted( // 1e8
         ITradingStorage.Id orderId,
         address indexed user,
         uint32 indexed index,
@@ -230,7 +218,7 @@ interface ITradingCallbacksUtils is
         uint256 priceImpactP,
         int256 percentProfit,
         uint256 amountSentToTrader,
-        uint256 collateralPriceUsd, // 1e8
+        uint256 collateralPriceUsd,
         bool exactExecution
     );
 
@@ -242,10 +230,7 @@ interface ITradingCallbacksUtils is
      * @param cancelReason reason for the cancellation
      */
     event MarketOpenCanceled(
-        ITradingStorage.Id orderId,
-        address indexed trader,
-        uint256 indexed pairIndex,
-        CancelReason cancelReason
+        ITradingStorage.Id orderId, address indexed trader, uint256 indexed pairIndex, CancelReason cancelReason
     );
 
     /**
@@ -286,10 +271,7 @@ interface ITradingCallbacksUtils is
      * @param amountCollateral amount charged (collateral precision)
      */
     event BorrowingFeeCharged(
-        address indexed trader,
-        uint32 indexed index,
-        uint8 indexed collateralIndex,
-        uint256 amountCollateral
+        address indexed trader, uint32 indexed index, uint8 indexed collateralIndex, uint256 amountCollateral
     );
 
     error PendingOrderNotOpen();

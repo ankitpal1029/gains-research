@@ -10,9 +10,7 @@ interface ILiquidityPool {
      * @dev AlgebraPool V1.9 equivalent of Uniswap V3 `observe` function
      * See https://github.com/cryptoalgebra/AlgebraV1.9/blob/main/src/core/contracts/interfaces/pool/IAlgebraPoolDerivedState.sol for more information
      */
-    function getTimepoints(
-        uint32[] calldata secondsAgos
-    )
+    function getTimepoints(uint32[] calldata secondsAgos)
         external
         view
         returns (
@@ -26,15 +24,10 @@ interface ILiquidityPool {
      * @dev Uniswap V3 `observe` function
      * See `https://github.com/Uniswap/v3-core/blob/main/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol` for more information
      */
-    function observe(
-        uint32[] calldata secondsAgos
-    )
+    function observe(uint32[] calldata secondsAgos)
         external
         view
-        returns (
-            int56[] memory tickCumulatives,
-            uint160[] memory secondsPerLiquidityCumulativeX128s
-        );
+        returns (int56[] memory tickCumulatives, uint160[] memory secondsPerLiquidityCumulativeX128s);
 
     /**
      * @notice The first of the two tokens of the pool, sorted by address

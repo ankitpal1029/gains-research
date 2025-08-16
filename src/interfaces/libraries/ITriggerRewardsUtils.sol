@@ -52,9 +52,7 @@ interface ITriggerRewardsUtils is ITriggerRewards {
      * @dev Returns the pending GNS trigger rewards for an oracle
      * @param _oracle address of the oracle
      */
-    function getTriggerPendingRewardsGns(
-        address _oracle
-    ) external view returns (uint256);
+    function getTriggerPendingRewardsGns(address _oracle) external view returns (uint256);
 
     /**
      *

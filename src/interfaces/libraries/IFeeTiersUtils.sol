@@ -26,20 +26,15 @@ interface IFeeTiersUtils is IFeeTiers {
      * @param _groupIndices indices of groups to update
      * @param _groupVolumeMultipliers corresponding new volume multipliers (1e3)
      */
-    function setGroupVolumeMultipliers(
-        uint256[] calldata _groupIndices,
-        uint256[] calldata _groupVolumeMultipliers
-    ) external;
+    function setGroupVolumeMultipliers(uint256[] calldata _groupIndices, uint256[] calldata _groupVolumeMultipliers)
+        external;
 
     /**
      * @dev Updates fee tiers
      * @param _feeTiersIndices indices of fee tiers to update
      * @param _feeTiers new fee tiers values (feeMultiplier, pointsThreshold)
      */
-    function setFeeTiers(
-        uint256[] calldata _feeTiersIndices,
-        IFeeTiersUtils.FeeTier[] calldata _feeTiers
-    ) external;
+    function setFeeTiers(uint256[] calldata _feeTiersIndices, IFeeTiersUtils.FeeTier[] calldata _feeTiers) external;
 
     /**
      * @dev Updates traders enrollment status in fee tiers
@@ -69,21 +64,14 @@ interface IFeeTiersUtils is IFeeTiers {
      * @param _volumeUsd trading volume in USD (1e18)
      * @param _pairIndex pair index
      */
-    function updateTraderPoints(
-        address _trader,
-        uint256 _volumeUsd,
-        uint256 _pairIndex
-    ) external;
+    function updateTraderPoints(address _trader, uint256 _volumeUsd, uint256 _pairIndex) external;
 
     /**
      * @dev Returns fee amount after applying the trader's active fee tier multiplier
      * @param _trader address of trader
      * @param _normalFeeAmountCollateral base fee amount (collateral precision)
      */
-    function calculateFeeAmount(
-        address _trader,
-        uint256 _normalFeeAmountCollateral
-    ) external view returns (uint256);
+    function calculateFeeAmount(address _trader, uint256 _normalFeeAmountCollateral) external view returns (uint256);
 
     /**
      * Returns the current number of active fee tiers
@@ -94,71 +82,58 @@ interface IFeeTiersUtils is IFeeTiers {
      * @dev Returns a fee tier's details (feeMultiplier, pointsThreshold)
      * @param _feeTierIndex fee tier index
      */
-    function getFeeTier(
-        uint256 _feeTierIndex
-    ) external view returns (IFeeTiersUtils.FeeTier memory);
+    function getFeeTier(uint256 _feeTierIndex) external view returns (IFeeTiersUtils.FeeTier memory);
 
     /**
      * @dev Returns a group's volume multiplier
      * @param _groupIndex group index (pairs storage fee index)
      */
-    function getGroupVolumeMultiplier(
-        uint256 _groupIndex
-    ) external view returns (uint256);
+    function getGroupVolumeMultiplier(uint256 _groupIndex) external view returns (uint256);
 
     /**
      * @dev Returns a trader's info (lastDayUpdated, trailingPoints)
      * @param _trader trader address
      */
-    function getFeeTiersTraderInfo(
-        address _trader
-    ) external view returns (IFeeTiersUtils.TraderInfo memory);
+    function getFeeTiersTraderInfo(address _trader) external view returns (IFeeTiersUtils.TraderInfo memory);
 
     /**
      * @dev Returns a trader's daily fee tier info (feeMultiplierCache, points)
      * @param _trader trader address
      * @param _day day
      */
-    function getFeeTiersTraderDailyInfo(
-        address _trader,
-        uint32 _day
-    ) external view returns (IFeeTiersUtils.TraderDailyInfo memory);
+    function getFeeTiersTraderDailyInfo(address _trader, uint32 _day)
+        external
+        view
+        returns (IFeeTiersUtils.TraderDailyInfo memory);
 
     /**
      * @dev Returns a trader's fee tiers enrollment status
      * @param _trader trader address
      */
-    function getTraderFeeTiersEnrollment(
-        address _trader
-    ) external view returns (IFeeTiersUtils.TraderEnrollment memory);
+    function getTraderFeeTiersEnrollment(address _trader)
+        external
+        view
+        returns (IFeeTiersUtils.TraderEnrollment memory);
 
     /**
      * @dev Returns a trader's unclaimed points, credited by Governance
      * @param _trader trader address
      */
-    function getTraderUnclaimedPoints(
-        address _trader
-    ) external view returns (uint224);
+    function getTraderUnclaimedPoints(address _trader) external view returns (uint224);
 
     /**
      * @dev Emitted when group volume multipliers are updated
      * @param groupIndices indices of updated groups
      * @param groupVolumeMultipliers new corresponding volume multipliers (1e3)
      */
-    event GroupVolumeMultipliersUpdated(
-        uint256[] groupIndices,
-        uint256[] groupVolumeMultipliers
-    );
+    event GroupVolumeMultipliersUpdated(uint256[] groupIndices, uint256[] groupVolumeMultipliers);
 
     /**
      * @dev Emitted when fee tiers are updated
      * @param feeTiersIndices indices of updated fee tiers
      * @param feeTiers new corresponding fee tiers values (feeMultiplier, pointsThreshold)
      */
-    event FeeTiersUpdated(
-        uint256[] feeTiersIndices,
-        IFeeTiersUtils.FeeTier[] feeTiers
-    );
+    event FeeTiersUpdated(uint256[] feeTiersIndices, IFeeTiersUtils.FeeTier[] feeTiers);
 
     /**
      * @dev Emitted when a trader's daily points are updated
@@ -166,11 +141,7 @@ interface IFeeTiersUtils is IFeeTiers {
      * @param day day
      * @param points points added (1e18 precision)
      */
-    event TraderDailyPointsIncreased(
-        address indexed trader,
-        uint32 indexed day,
-        uint224 points
-    );
+    event TraderDailyPointsIncreased(address indexed trader, uint32 indexed day, uint224 points);
 
     /**
      * @dev Emitted when a trader info is updated for the first time
@@ -186,22 +157,14 @@ interface IFeeTiersUtils is IFeeTiers {
      * @param toDay to day
      * @param expiredPoints expired points amount (1e18 precision)
      */
-    event TraderTrailingPointsExpired(
-        address indexed trader,
-        uint32 fromDay,
-        uint32 toDay,
-        uint224 expiredPoints
-    );
+    event TraderTrailingPointsExpired(address indexed trader, uint32 fromDay, uint32 toDay, uint224 expiredPoints);
 
     /**
      * @dev Emitted when a trader's info is updated
      * @param trader address of trader
      * @param traderInfo new trader info value (lastDayUpdated, trailingPoints)
      */
-    event TraderInfoUpdated(
-        address indexed trader,
-        IFeeTiersUtils.TraderInfo traderInfo
-    );
+    event TraderInfoUpdated(address indexed trader, IFeeTiersUtils.TraderInfo traderInfo);
 
     /**
      * @dev Emitted when a trader's cached fee multiplier is updated (this is the one used in fee calculations)
@@ -209,21 +172,14 @@ interface IFeeTiersUtils is IFeeTiers {
      * @param day day
      * @param feeMultiplier new fee multiplier (1e3 precision)
      */
-    event TraderFeeMultiplierCached(
-        address indexed trader,
-        uint32 indexed day,
-        uint32 feeMultiplier
-    );
+    event TraderFeeMultiplierCached(address indexed trader, uint32 indexed day, uint32 feeMultiplier);
 
     /**
      * @dev Emitted when a trader's enrollment status is updated
      * @param trader address of trader
      * @param enrollment trader's new enrollment status
      */
-    event TraderEnrollmentUpdated(
-        address indexed trader,
-        IFeeTiersUtils.TraderEnrollment enrollment
-    );
+    event TraderEnrollmentUpdated(address indexed trader, IFeeTiersUtils.TraderEnrollment enrollment);
 
     /**
      * @dev Emitted when a trader is credited points by governance
@@ -233,10 +189,7 @@ interface IFeeTiersUtils is IFeeTiers {
      * @param points points added (1e18 precision)
      */
     event TraderPointsCredited(
-        address indexed trader,
-        uint32 indexed day,
-        IFeeTiers.CreditType creditType,
-        uint224 points
+        address indexed trader, uint32 indexed day, IFeeTiers.CreditType creditType, uint224 points
     );
 
     /**
@@ -245,11 +198,7 @@ interface IFeeTiersUtils is IFeeTiers {
      * @param day day of claim
      * @param points points added (1e18 precision)
      */
-    event TraderUnclaimedPointsClaimed(
-        address indexed trader,
-        uint32 indexed day,
-        uint224 points
-    );
+    event TraderUnclaimedPointsClaimed(address indexed trader, uint32 indexed day, uint224 points);
 
     error WrongFeeTier();
     error PointsOverflow();

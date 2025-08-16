@@ -9,19 +9,12 @@ import "../libraries/IUpdatePositionSizeUtils.sol";
 /**
  * @dev Interface for GNSTradingInteractions facet (inherits types and also contains functions, events, and custom errors)
  */
-interface ITradingInteractionsUtils is
-    ITradingInteractions,
-    IUpdateLeverageUtils,
-    IUpdatePositionSizeUtils
-{
+interface ITradingInteractionsUtils is ITradingInteractions, IUpdateLeverageUtils, IUpdatePositionSizeUtils {
     /**
      * @dev Initializes the trading facet
      * @param _marketOrdersTimeoutBlocks The number of blocks after which a market order is considered timed out
      */
-    function initializeTrading(
-        uint16 _marketOrdersTimeoutBlocks,
-        address[] memory _usersByPassTriggerLink
-    ) external;
+    function initializeTrading(uint16 _marketOrdersTimeoutBlocks, address[] memory _usersByPassTriggerLink) external;
 
     /**
      * @dev Updates marketOrdersTimeoutBlocks
@@ -34,10 +27,7 @@ interface ITradingInteractionsUtils is
      * @param _users array of addresses that can bypass the link cost of triggerOrder
      * @param _shouldByPass whether each user should bypass the link cost
      */
-    function updateByPassTriggerLink(
-        address[] memory _users,
-        bool[] memory _shouldByPass
-    ) external;
+    function updateByPassTriggerLink(address[] memory _users, bool[] memory _shouldByPass) external;
 
     /**
      * @dev Sets _delegate as the new delegate of caller (can call delegatedAction)
@@ -55,10 +45,7 @@ interface ITradingInteractionsUtils is
      * @param _trader the trader address to execute the trading action for
      * @param _callData the data to be executed (open trade/close trade, etc.)
      */
-    function delegatedTradingAction(
-        address _trader,
-        bytes calldata _callData
-    ) external returns (bytes memory);
+    function delegatedTradingAction(address _trader, bytes calldata _callData) external returns (bytes memory);
 
     /**
      * @dev Opens a new trade/limit order/stop order
@@ -66,11 +53,7 @@ interface ITradingInteractionsUtils is
      * @param _maxSlippageP the maximum allowed slippage % when open the trade (1e3 precision)
      * @param _referrer the address of the referrer (can only be set once for a trader)
      */
-    function openTrade(
-        ITradingStorage.Trade memory _trade,
-        uint16 _maxSlippageP,
-        address _referrer
-    ) external;
+    function openTrade(ITradingStorage.Trade memory _trade, uint16 _maxSlippageP, address _referrer) external;
 
     /**
      * @dev Wraps native token and opens a new trade/limit order/stop order
@@ -78,21 +61,16 @@ interface ITradingInteractionsUtils is
      * @param _maxSlippageP the maximum allowed slippage % when open the trade (1e3 precision)
      * @param _referrer the address of the referrer (can only be set once for a trader)
      */
-    function openTradeNative(
-        ITradingStorage.Trade memory _trade,
-        uint16 _maxSlippageP,
-        address _referrer
-    ) external payable;
+    function openTradeNative(ITradingStorage.Trade memory _trade, uint16 _maxSlippageP, address _referrer)
+        external
+        payable;
 
     /**
      * @dev Updates existing trade's max closing slippage % for caller
      * @param _index index of trade
      * @param _maxSlippageP new max closing slippage % (1e3 precision)
      */
-    function updateMaxClosingSlippageP(
-        uint32 _index,
-        uint16 _maxSlippageP
-    ) external;
+    function updateMaxClosingSlippageP(uint32 _index, uint16 _maxSlippageP) external;
 
     /**
      * @dev Closes an open trade (market order) for caller
@@ -109,13 +87,8 @@ interface ITradingInteractionsUtils is
      * @param _sl new sl of limit/stop order (1e10 precision)
      * @param _maxSlippageP new max slippage % of limit/stop order (1e3 precision)
      */
-    function updateOpenOrder(
-        uint32 _index,
-        uint64 _triggerPrice,
-        uint64 _tp,
-        uint64 _sl,
-        uint16 _maxSlippageP
-    ) external;
+    function updateOpenOrder(uint32 _index, uint64 _triggerPrice, uint64 _tp, uint64 _sl, uint16 _maxSlippageP)
+        external;
 
     /**
      * @dev Cancels an open limit/stop order for caller
@@ -162,10 +135,7 @@ interface ITradingInteractionsUtils is
      * @param _index index of trade
      * @param _newLeverage new leverage (1e3)
      */
-    function updateLeverageNative(
-        uint32 _index,
-        uint24 _newLeverage
-    ) external payable;
+    function updateLeverageNative(uint32 _index, uint24 _newLeverage) external payable;
 
     /**
      * @dev Increase trade position size
@@ -206,12 +176,8 @@ interface ITradingInteractionsUtils is
      * @param _leverageDelta leverage to reduce by (1e3)
      * @param _expectedPrice expected closing price, used to check max slippage (1e10 precision)
      */
-    function decreasePositionSize(
-        uint32 _index,
-        uint120 _collateralDelta,
-        uint24 _leverageDelta,
-        uint64 _expectedPrice
-    ) external;
+    function decreasePositionSize(uint32 _index, uint120 _collateralDelta, uint24 _leverageDelta, uint64 _expectedPrice)
+        external;
 
     /**
      * @dev Returns the wrapped native token or address(0) if the current chain, or the wrapped token, is not supported.
@@ -228,9 +194,7 @@ interface ITradingInteractionsUtils is
      * @dev Returns the address a trader delegates his trading actions to
      * @param _trader address of the trader
      */
-    function getTradingDelegate(
-        address _trader
-    ) external view returns (address);
+    function getTradingDelegate(address _trader) external view returns (address);
 
     /**
      * @dev Returns the current marketOrdersTimeoutBlocks value
@@ -263,12 +227,7 @@ interface ITradingInteractionsUtils is
      * @param pairIndex index of the trading pair
      * @param open whether the market order is for opening or closing a trade
      */
-    event MarketOrderInitiated(
-        ITradingStorage.Id orderId,
-        address indexed trader,
-        uint16 indexed pairIndex,
-        bool open
-    );
+    event MarketOrderInitiated(ITradingStorage.Id orderId, address indexed trader, uint16 indexed pairIndex, bool open);
 
     /**
      * @dev Emitted when a new limit/stop order is placed
@@ -276,11 +235,7 @@ interface ITradingInteractionsUtils is
      * @param pairIndex index of the trading pair
      * @param index index of the open limit order for caller
      */
-    event OpenOrderPlaced(
-        address indexed trader,
-        uint16 indexed pairIndex,
-        uint32 indexed index
-    );
+    event OpenOrderPlaced(address indexed trader, uint16 indexed pairIndex, uint32 indexed index);
 
     /**
      *
@@ -308,11 +263,7 @@ interface ITradingInteractionsUtils is
      * @param pairIndex index of the trading pair
      * @param index index of the open limit/stop order for caller
      */
-    event OpenLimitCanceled(
-        address indexed trader,
-        uint16 indexed pairIndex,
-        uint32 indexed index
-    );
+    event OpenLimitCanceled(address indexed trader, uint16 indexed pairIndex, uint32 indexed index);
 
     /**
      * @dev Emitted when a trigger order is initiated (tp/sl/liq/limit/stop orders)
@@ -322,10 +273,7 @@ interface ITradingInteractionsUtils is
      * @param byPassesLinkCost whether the caller bypasses the link cost
      */
     event TriggerOrderInitiated(
-        ITradingStorage.Id orderId,
-        address indexed trader,
-        uint16 indexed pairIndex,
-        bool byPassesLinkCost
+        ITradingStorage.Id orderId, address indexed trader, uint16 indexed pairIndex, bool byPassesLinkCost
     );
 
     /**
@@ -333,10 +281,7 @@ interface ITradingInteractionsUtils is
      * @param pendingOrderId id of the pending order
      * @param pairIndex index of the trading pair
      */
-    event ChainlinkCallbackTimeout(
-        ITradingStorage.Id pendingOrderId,
-        uint256 indexed pairIndex
-    );
+    event ChainlinkCallbackTimeout(ITradingStorage.Id pendingOrderId, uint256 indexed pairIndex);
 
     /**
      * @dev Emitted when a pending market order is canceled due to timeout and new closeTradeMarket() call failed
@@ -344,11 +289,7 @@ interface ITradingInteractionsUtils is
      * @param pairIndex index of the trading pair
      * @param index index of the open trade for caller
      */
-    event CouldNotCloseTrade(
-        address indexed trader,
-        uint16 indexed pairIndex,
-        uint32 indexed index
-    );
+    event CouldNotCloseTrade(address indexed trader, uint16 indexed pairIndex, uint32 indexed index);
 
     /**
      * @dev Emitted when a native token is wrapped

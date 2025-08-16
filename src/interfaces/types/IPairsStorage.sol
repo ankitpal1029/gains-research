@@ -8,10 +8,12 @@ interface IPairsStorage {
     struct PairsStorage {
         mapping(uint256 => Pair) pairs;
         mapping(uint256 => Group) groups;
-        mapping(uint256 => Fee) fees; /// @custom:deprecated
+        mapping(uint256 => Fee) fees;
+        /// @custom:deprecated
         mapping(string => mapping(string => bool)) isPairListed;
         mapping(uint256 => uint256) pairCustomMaxLeverage; // 1e3 precision
-        uint256 currentOrderId; /// @custom:deprecated
+        uint256 currentOrderId;
+        /// @custom:deprecated
         uint256 pairsCount;
         uint256 groupsCount;
         uint256 feesCount;
@@ -24,7 +26,8 @@ interface IPairsStorage {
     struct Pair {
         string from;
         string to;
-        Feed feed; /// @custom:deprecated
+        Feed feed;
+        /// @custom:deprecated
         uint256 spreadP; // 1e10
         uint256 groupIndex;
         uint256 feeIndex;
@@ -32,7 +35,8 @@ interface IPairsStorage {
 
     struct Group {
         string name;
-        bytes32 job; /// @custom:deprecated
+        bytes32 job;
+        /// @custom:deprecated
         uint256 minLeverage; // 1e3 precision
         uint256 maxLeverage; // 1e3 precision
     }
@@ -76,13 +80,17 @@ interface IPairsStorage {
         DEFAULT,
         INVERT,
         COMBINE
-    } /// @custom:deprecated
+    }
+    /// @custom:deprecated
+
     struct Feed {
         address feed1;
         address feed2;
         FeedCalculation feedCalculation;
         uint256 maxDeviationP;
-    } /// @custom:deprecated
+    }
+    /// @custom:deprecated
+
     struct Fee {
         string name;
         uint256 openFeeP; // 1e10 (% of position size)
@@ -90,5 +98,6 @@ interface IPairsStorage {
         uint256 oracleFeeP; // 1e10 (% of position size)
         uint256 triggerOrderFeeP; // 1e10 (% of position size)
         uint256 minPositionSizeUsd; // 1e18 (collateral x leverage, useful for min fee)
-    } /// @custom:deprecated
+    }
+    /// @custom:deprecated
 }

@@ -46,10 +46,7 @@ interface IPriceAggregatorUtils is IPriceAggregator {
      * @param _maxMarketDeviationP max market order deviation percentage (1e3, %)
      * @param _maxLookbackDeviationP max lookback order deviation percentage (1e3, %)
      */
-    function initializeMaxDeviationsP(
-        uint24 _maxMarketDeviationP,
-        uint24 _maxLookbackDeviationP
-    ) external;
+    function initializeMaxDeviationsP(uint24 _maxMarketDeviationP, uint24 _maxLookbackDeviationP) external;
 
     /**
      * @dev Updates LINK/USD chainlink price feed
@@ -62,20 +59,15 @@ interface IPriceAggregatorUtils is IPriceAggregator {
      * @param _collateralIndex collateral index
      * @param _value new value
      */
-    function updateCollateralUsdPriceFeed(
-        uint8 _collateralIndex,
-        IChainlinkFeed _value
-    ) external;
+    function updateCollateralUsdPriceFeed(uint8 _collateralIndex, IChainlinkFeed _value) external;
 
     /**
      * @dev Updates collateral/GNS liquidity pool
      * @param _collateralIndex collateral index
      * @param _liquidityPoolInput new values
      */
-    function updateCollateralGnsLiquidityPool(
-        uint8 _collateralIndex,
-        LiquidityPoolInput calldata _liquidityPoolInput
-    ) external;
+    function updateCollateralGnsLiquidityPool(uint8 _collateralIndex, LiquidityPoolInput calldata _liquidityPoolInput)
+        external;
 
     /**
      * @dev Updates TWAP interval
@@ -173,74 +165,58 @@ interface IPriceAggregatorUtils is IPriceAggregator {
      * @param _pairIndex pair index
      * @param _positionSizeCollateral position size in collateral tokens (collateral precision)
      */
-    function getLinkFee(
-        uint8 _collateralIndex,
-        address _trader,
-        uint16 _pairIndex,
-        uint256 _positionSizeCollateral
-    ) external view returns (uint256);
+    function getLinkFee(uint8 _collateralIndex, address _trader, uint16 _pairIndex, uint256 _positionSizeCollateral)
+        external
+        view
+        returns (uint256);
 
     /**
      * @dev Returns collateral/USD price
      * @param _collateralIndex index of collateral
      */
-    function getCollateralPriceUsd(
-        uint8 _collateralIndex
-    ) external view returns (uint256);
+    function getCollateralPriceUsd(uint8 _collateralIndex) external view returns (uint256);
 
     /**
      * @dev Returns USD normalized value from collateral value
      * @param _collateralIndex index of collateral
      * @param _collateralValue collateral value (collateral precision)
      */
-    function getUsdNormalizedValue(
-        uint8 _collateralIndex,
-        uint256 _collateralValue
-    ) external view returns (uint256);
+    function getUsdNormalizedValue(uint8 _collateralIndex, uint256 _collateralValue) external view returns (uint256);
 
     /**
      * @dev Returns collateral value (collateral precision) from USD normalized value
      * @param _collateralIndex index of collateral
      * @param _normalizedValue normalized value (1e18 USD)
      */
-    function getCollateralFromUsdNormalizedValue(
-        uint8 _collateralIndex,
-        uint256 _normalizedValue
-    ) external view returns (uint256);
+    function getCollateralFromUsdNormalizedValue(uint8 _collateralIndex, uint256 _normalizedValue)
+        external
+        view
+        returns (uint256);
 
     /**
      * @dev Returns GNS/USD price based on GNS/collateral price
      * @param _collateralIndex index of collateral
      */
-    function getGnsPriceUsd(
-        uint8 _collateralIndex
-    ) external view returns (uint256);
+    function getGnsPriceUsd(uint8 _collateralIndex) external view returns (uint256);
 
     /**
      * @dev Returns GNS/USD price based on GNS/collateral price
      * @param _collateralIndex index of collateral
      * @param _gnsPriceCollateral GNS/collateral price (1e10)
      */
-    function getGnsPriceUsd(
-        uint8 _collateralIndex,
-        uint256 _gnsPriceCollateral
-    ) external view returns (uint256);
+    function getGnsPriceUsd(uint8 _collateralIndex, uint256 _gnsPriceCollateral) external view returns (uint256);
 
     /**
      * @dev Returns GNS/collateral price
      * @param _collateralIndex index of collateral
      */
-    function getGnsPriceCollateralIndex(
-        uint8 _collateralIndex
-    ) external view returns (uint256);
+    function getGnsPriceCollateralIndex(uint8 _collateralIndex) external view returns (uint256);
 
     /**
      * @dev Returns GNS/collateral price
      * @param _collateral address of the collateral
      */
-    function getGnsPriceCollateralAddress(
-        address _collateral
-    ) external view returns (uint256);
+    function getGnsPriceCollateralAddress(address _collateral) external view returns (uint256);
 
     /**
      * @dev Returns the link/usd price feed address
@@ -282,33 +258,28 @@ interface IPriceAggregatorUtils is IPriceAggregator {
      * @dev Returns collateral/gns liquidity pool info
      * @param _collateralIndex index of collateral
      */
-    function getCollateralGnsLiquidityPool(
-        uint8 _collateralIndex
-    ) external view returns (LiquidityPoolInfo memory);
+    function getCollateralGnsLiquidityPool(uint8 _collateralIndex) external view returns (LiquidityPoolInfo memory);
 
     /**
      * @dev Returns collateral/usd chainlink price feed
      * @param _collateralIndex index of collateral
      */
-    function getCollateralUsdPriceFeed(
-        uint8 _collateralIndex
-    ) external view returns (IChainlinkFeed);
+    function getCollateralUsdPriceFeed(uint8 _collateralIndex) external view returns (IChainlinkFeed);
 
     /**
      * @dev Returns order data
      * @param _requestId index of collateral
      */
-    function getPriceAggregatorOrder(
-        bytes32 _requestId
-    ) external view returns (Order memory);
+    function getPriceAggregatorOrder(bytes32 _requestId) external view returns (Order memory);
 
     /**
      * @dev Returns order data
      * @param _orderId order id
      */
-    function getPriceAggregatorOrderAnswers(
-        ITradingStorage.Id calldata _orderId
-    ) external view returns (OrderAnswer[] memory);
+    function getPriceAggregatorOrderAnswers(ITradingStorage.Id calldata _orderId)
+        external
+        view
+        returns (OrderAnswer[] memory);
 
     /**
      * @dev Returns chainlink token address
@@ -363,10 +334,7 @@ interface IPriceAggregatorUtils is IPriceAggregator {
      * @param collateralIndex collateral index
      * @param newValue new value
      */
-    event CollateralGnsLiquidityPoolUpdated(
-        uint8 collateralIndex,
-        LiquidityPoolInfo newValue
-    );
+    event CollateralGnsLiquidityPoolUpdated(uint8 collateralIndex, LiquidityPoolInfo newValue);
 
     /**
      * @dev Emitted when TWAP interval is updated
@@ -442,10 +410,7 @@ interface IPriceAggregatorUtils is IPriceAggregator {
      * @param a aggregator answer data
      * @param orderType order type
      */
-    event TradingCallbackExecuted(
-        ITradingCallbacks.AggregatorAnswer a,
-        ITradingStorage.PendingOrderType orderType
-    );
+    event TradingCallbackExecuted(ITradingCallbacks.AggregatorAnswer a, ITradingStorage.PendingOrderType orderType);
 
     /**
      * @dev Emitted when a price is received from the oracles

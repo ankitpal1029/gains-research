@@ -20,16 +20,11 @@ library ChainUtils {
     uint256 internal constant TESTNET = 31337;
 
     // Wrapped native tokens
-    address private constant ARBITRUM_MAINNET_WETH =
-        0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
-    address private constant ARBITRUM_SEPOLIA_WETH =
-        0x980B62Da83eFf3D4576C647993b0c1D7faf17c73;
-    address private constant POLYGON_MAINNET_WMATIC =
-        0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
-    address private constant BASE_MAINNET_WETH =
-        0x4200000000000000000000000000000000000006;
-    address private constant APECHAIN_MAINNET_WAPE =
-        0x00000000000f7e000644657dC9417b185962645a; // Custom non-rebasing WAPE
+    address private constant ARBITRUM_MAINNET_WETH = 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
+    address private constant ARBITRUM_SEPOLIA_WETH = 0x980B62Da83eFf3D4576C647993b0c1D7faf17c73;
+    address private constant POLYGON_MAINNET_WMATIC = 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
+    address private constant BASE_MAINNET_WETH = 0x4200000000000000000000000000000000000006;
+    address private constant APECHAIN_MAINNET_WAPE = 0x00000000000f7e000644657dC9417b185962645a; // Custom non-rebasing WAPE
 
     IArbSys private constant ARB_SYS = IArbSys(address(100));
 
@@ -39,11 +34,8 @@ library ChainUtils {
      * @dev Returns the current block number (l2 block for arbitrum)
      */
     function getBlockNumber() internal view returns (uint256) {
-        if (
-            block.chainid == ARBITRUM_MAINNET ||
-            block.chainid == APECHAIN_MAINNET ||
-            block.chainid == ARBITRUM_SEPOLIA
-        ) {
+        if (block.chainid == ARBITRUM_MAINNET || block.chainid == APECHAIN_MAINNET || block.chainid == ARBITRUM_SEPOLIA)
+        {
             return ARB_SYS.arbBlockNumber();
         }
 
@@ -58,9 +50,7 @@ library ChainUtils {
      * @dev Returns blockNumber converted to uint48
      * @param blockNumber block number to convert
      */
-    function getUint48BlockNumber(
-        uint256 blockNumber
-    ) internal pure returns (uint48) {
+    function getUint48BlockNumber(uint256 blockNumber) internal pure returns (uint48) {
         if (blockNumber > type(uint48).max) revert Overflow();
         return uint48(blockNumber);
     }
@@ -109,15 +99,10 @@ library ChainUtils {
      * @dev Important: the result is an estimation and may not be accurate. Use with caution.
      * @param _blocks block count to convert to seconds
      */
-    function convertBlocksToSeconds(
-        uint256 _blocks
-    ) internal view returns (uint256) {
+    function convertBlocksToSeconds(uint256 _blocks) internal view returns (uint256) {
         uint256 millisecondsPerBlock;
 
-        if (
-            block.chainid == ARBITRUM_MAINNET ||
-            block.chainid == ARBITRUM_SEPOLIA
-        ) {
+        if (block.chainid == ARBITRUM_MAINNET || block.chainid == ARBITRUM_SEPOLIA) {
             millisecondsPerBlock = 300; // 0.3 seconds per block
         } else if (block.chainid == BASE_MAINNET) {
             millisecondsPerBlock = 2000; // 2 seconds per block
@@ -131,7 +116,6 @@ library ChainUtils {
             revert IGeneralErrors.UnsupportedChain();
         }
 
-        return
-            Math.mulDiv(_blocks, millisecondsPerBlock, 1000, Math.Rounding.Up);
+        return Math.mulDiv(_blocks, millisecondsPerBlock, 1000, Math.Rounding.Up);
     }
 }

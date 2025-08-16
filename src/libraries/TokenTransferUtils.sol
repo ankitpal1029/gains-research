@@ -24,12 +24,7 @@ library TokenTransferUtils {
      * @param _amount the amount of tokens to transfer
      * @param _gasLimit how much gas to forward.
      */
-    function unwrapAndTransferNative(
-        address _token,
-        address _to,
-        uint256 _amount,
-        uint256 _gasLimit
-    ) internal {
+    function unwrapAndTransferNative(address _token, address _to, uint256 _amount, uint256 _gasLimit) internal {
         // 1. Unwrap `_amount` of `_token`
         IWETH9(_token).withdraw(_amount);
 
@@ -69,12 +64,7 @@ library TokenTransferUtils {
      * @param _to the recipient
      * @param _amount amount of tokens to transfer
      */
-    function transferFrom(
-        address _token,
-        address _from,
-        address _to,
-        uint256 _amount
-    ) internal {
+    function transferFrom(address _token, address _from, address _to, uint256 _amount) internal {
         IERC20(_token).safeTransferFrom(_from, _to, _amount);
     }
 }

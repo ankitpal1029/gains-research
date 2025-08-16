@@ -20,11 +20,7 @@ interface ITradingCommonUtils {
      * @param collateralIndex index of the collateral
      * @param amountCollateral amount charged (collateral precision)
      */
-    event GovFeeCharged(
-        address indexed trader,
-        uint8 indexed collateralIndex,
-        uint256 amountCollateral
-    );
+    event GovFeeCharged(address indexed trader, uint8 indexed collateralIndex, uint256 amountCollateral);
 
     /**
      * @dev Emitted when referral fee is charged
@@ -32,11 +28,7 @@ interface ITradingCommonUtils {
      * @param collateralIndex index of the collateral
      * @param amountCollateral amount charged (collateral precision)
      */
-    event ReferralFeeCharged(
-        address indexed trader,
-        uint8 indexed collateralIndex,
-        uint256 amountCollateral
-    );
+    event ReferralFeeCharged(address indexed trader, uint8 indexed collateralIndex, uint256 amountCollateral);
 
     /**
      * @dev Emitted when GNS otc fee is charged
@@ -44,11 +36,7 @@ interface ITradingCommonUtils {
      * @param collateralIndex index of the collateral
      * @param amountCollateral amount charged (collateral precision)
      */
-    event GnsOtcFeeCharged(
-        address indexed trader,
-        uint8 indexed collateralIndex,
-        uint256 amountCollateral
-    );
+    event GnsOtcFeeCharged(address indexed trader, uint8 indexed collateralIndex, uint256 amountCollateral);
 
     /**
      * @dev Emitted when trigger fee is charged
@@ -56,11 +44,7 @@ interface ITradingCommonUtils {
      * @param collateralIndex index of the collateral
      * @param amountCollateral amount charged (collateral precision)
      */
-    event TriggerFeeCharged(
-        address indexed trader,
-        uint8 indexed collateralIndex,
-        uint256 amountCollateral
-    );
+    event TriggerFeeCharged(address indexed trader, uint8 indexed collateralIndex, uint256 amountCollateral);
 
     /**
      * @dev Emitted when gToken fee is charged
@@ -68,9 +52,5 @@ interface ITradingCommonUtils {
      * @param collateralIndex index of the collateral
      * @param amountCollateral amount charged (collateral precision)
      */
-    event GTokenFeeCharged(
-        address indexed trader,
-        uint8 indexed collateralIndex,
-        uint256 amountCollateral
-    );
+    event GTokenFeeCharged(address indexed trader, uint8 indexed collateralIndex, uint256 amountCollateral);
 }

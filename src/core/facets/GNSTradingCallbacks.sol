@@ -20,16 +20,12 @@ contract GNSTradingCallbacks is GNSAddressStore, ITradingCallbacksUtils {
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function initializeCallbacks(
-        uint8 _vaultClosingFeeP
-    ) external reinitializer(9) {
+    function initializeCallbacks(uint8 _vaultClosingFeeP) external reinitializer(9) {
         TradingCallbacksUtils.initializeCallbacks(_vaultClosingFeeP);
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function initializeTreasuryAddress(
-        address _treasury
-    ) external reinitializer(15) {
+    function initializeTreasuryAddress(address _treasury) external reinitializer(15) {
         TradingCallbacksUtils.updateTreasuryAddress(_treasury);
     }
 
@@ -41,9 +37,7 @@ contract GNSTradingCallbacks is GNSAddressStore, ITradingCallbacksUtils {
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function updateTreasuryAddress(
-        address _treasury
-    ) external onlyRole(Role.GOV_TIMELOCK) {
+    function updateTreasuryAddress(address _treasury) external onlyRole(Role.GOV_TIMELOCK) {
         TradingCallbacksUtils.updateTreasuryAddress(_treasury);
     }
 
@@ -55,30 +49,22 @@ contract GNSTradingCallbacks is GNSAddressStore, ITradingCallbacksUtils {
     // Interactions
 
     /// @inheritdoc ITradingCallbacksUtils
-    function openTradeMarketCallback(
-        AggregatorAnswer memory _a
-    ) external virtual onlySelf {
+    function openTradeMarketCallback(AggregatorAnswer memory _a) external virtual onlySelf {
         TradingCallbacksUtils.openTradeMarketCallback(_a);
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function closeTradeMarketCallback(
-        AggregatorAnswer memory _a
-    ) external virtual onlySelf {
+    function closeTradeMarketCallback(AggregatorAnswer memory _a) external virtual onlySelf {
         TradingCallbacksUtils.closeTradeMarketCallback(_a);
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function executeTriggerOpenOrderCallback(
-        AggregatorAnswer memory _a
-    ) external virtual onlySelf {
+    function executeTriggerOpenOrderCallback(AggregatorAnswer memory _a) external virtual onlySelf {
         TradingCallbacksUtils.executeTriggerOpenOrderCallback(_a);
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function executeTriggerCloseOrderCallback(
-        AggregatorAnswer memory _a
-    ) external virtual onlySelf {
+    function executeTriggerCloseOrderCallback(AggregatorAnswer memory _a) external virtual onlySelf {
         TradingCallbacksUtils.executeTriggerCloseOrderCallback(_a);
     }
 
@@ -90,31 +76,22 @@ contract GNSTradingCallbacks is GNSAddressStore, ITradingCallbacksUtils {
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function getPendingGovFeesCollateral(
-        uint8 _collateralIndex
-    ) external view returns (uint256) {
-        return
-            TradingCallbacksUtils.getPendingGovFeesCollateral(_collateralIndex);
+    function getPendingGovFeesCollateral(uint8 _collateralIndex) external view returns (uint256) {
+        return TradingCallbacksUtils.getPendingGovFeesCollateral(_collateralIndex);
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function updateLeverageCallback(
-        AggregatorAnswer memory _a
-    ) external virtual onlySelf {
+    function updateLeverageCallback(AggregatorAnswer memory _a) external virtual onlySelf {
         TradingCallbacksUtils.updateLeverageCallback(_a);
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function increasePositionSizeMarketCallback(
-        AggregatorAnswer memory _a
-    ) external virtual onlySelf {
+    function increasePositionSizeMarketCallback(AggregatorAnswer memory _a) external virtual onlySelf {
         TradingCallbacksUtils.increasePositionSizeMarketCallback(_a);
     }
 
     /// @inheritdoc ITradingCallbacksUtils
-    function decreasePositionSizeMarketCallback(
-        AggregatorAnswer memory _a
-    ) external virtual onlySelf {
+    function decreasePositionSizeMarketCallback(AggregatorAnswer memory _a) external virtual onlySelf {
         TradingCallbacksUtils.decreasePositionSizeMarketCallback(_a);
     }
 
@@ -134,14 +111,7 @@ contract GNSTradingCallbacks is GNSAddressStore, ITradingCallbacksUtils {
             ITradingCallbacks.Values memory v
         )
     {
-        return
-            TradingCallbacksUtils.validateTriggerOpenOrderCallback(
-                _tradeId,
-                _orderType,
-                _open,
-                _high,
-                _low
-            );
+        return TradingCallbacksUtils.validateTriggerOpenOrderCallback(_tradeId, _orderType, _open, _high, _low);
     }
 
     /// @inheritdoc ITradingCallbacksUtils
@@ -160,13 +130,6 @@ contract GNSTradingCallbacks is GNSAddressStore, ITradingCallbacksUtils {
             ITradingCallbacks.Values memory v
         )
     {
-        return
-            TradingCallbacksUtils.validateTriggerCloseOrderCallback(
-                _tradeId,
-                _orderType,
-                _open,
-                _high,
-                _low
-            );
+        return TradingCallbacksUtils.validateTriggerCloseOrderCallback(_tradeId, _orderType, _open, _high, _low);
     }
 }
