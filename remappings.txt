@@ -1,2 +1,3 @@
 @openzeppelin=openzeppelin/
 @chainlink=chainlink/
+@uniswap=uniswap/
