@@ -170,8 +170,8 @@ interface ITradingCallbacksUtils is
      * @param amountSentToTrader the final amount of collateral sent to the trader
      * @param collateralPriceUsd the price of the collateral in USD (1e8 precision)
      */
-    event MarketExecuted( // before fees
-        // 1e8
+    // before fees 1e8
+    event MarketExecuted(
         ITradingStorage.Id orderId,
         address indexed user,
         uint32 indexed index,
@@ -204,7 +204,8 @@ interface ITradingCallbacksUtils is
      * @param collateralPriceUsd the price of the collateral in USD (1e8 precision)
      * @param exactExecution true if guaranteed execution was used
      */
-    event LimitExecuted( // 1e8
+    // 1e8
+    event LimitExecuted(
         ITradingStorage.Id orderId,
         address indexed user,
         uint32 indexed index,
